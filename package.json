@@ -1,0 +1,24 @@
+{
+  "name": "ajshop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Anoop555777/ajshop.git"
+  },
+  "author": "anoop",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Anoop555777/ajshop/issues"
+  },
+  "homepage": "https://github.com/Anoop555777/ajshop#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^2.0.15"
+  }
+}
