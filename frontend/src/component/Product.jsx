@@ -3,9 +3,6 @@ import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Review from "./Reviews";
 const Product = (props) => {
-  let price = props.product.price * 90;
-  price = price.toFixed(2);
-
   return (
     <>
       <Card className="my-3 p-3 rounded">
@@ -26,7 +23,7 @@ const Product = (props) => {
               />
             </div>
           </Card.Text>
-          <Card.Text as="h3">₹{price}</Card.Text>
+          <Card.Text as="h3">₹{props.product.price}</Card.Text>
         </Card.Body>
       </Card>
     </>
