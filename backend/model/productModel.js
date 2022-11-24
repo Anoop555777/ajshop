@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const productSchema = mongoose.Schema({
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+    required: [true, "product must created by a user"],
+  },
   name: {
     type: String,
     required: [true, "product name required"],
