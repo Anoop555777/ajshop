@@ -3,7 +3,9 @@ const app = express();
 const productRouter = require("./routes/productRouter");
 const userRouter = require("./routes/userRouter");
 const globalErrorHandler = require("./controller/errorController");
+
 app.use(express.json());
+
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/users", userRouter);
 app.use(globalErrorHandler);
