@@ -20,6 +20,7 @@ const products = [
       "Introducing the iPhone 11 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life",
     brand: "Apple",
     category: "Electronics",
+
     price: 90 * 599,
     countInStock: 7,
     rating: 4.0,

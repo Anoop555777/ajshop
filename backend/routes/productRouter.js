@@ -1,6 +1,22 @@
 const express = require("express");
 const router = express.Router();
+const authController = require("./../controller/authController");
 const productController = require("../controller/productController");
-router.route("/").get(productController.getAllProduct);
-router.route("/:id").get(productController.getProduct);
+router
+  .route("/")
+  .get(productController.getAllProduct)
+  .post(
+    authController.protect,
+    authController.restictTo("admin"),
+    productController.createProduct
+  );
+router
+  .route("/:id")
+  .get(productController.getProduct)
+  .delete(
+    authController.protect,
+    authController.restictTo("admin"),
+    productController.deleteProduct
+  );
+
 module.exports = router;

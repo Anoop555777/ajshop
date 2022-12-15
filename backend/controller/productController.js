@@ -21,3 +21,24 @@ exports.getProduct = catchAsync(async (req, res, next) => {
   }
   res.status(200).json({ status: "success", product });
 });
+
+exports.createProduct = catchAsync(async (req, res, next) => {
+  const product = await Product.create(req.body);
+
+  if (!product)
+    return next(
+      new AppError(404, "can't able to create the product please try again.")
+    );
+
+  res.status(201).json({ status: "success", data: { product } });
+});
+
+exports.deleteProduct = catchAsync(async (req, res, next) => {
+  const product = await Product.findByIdAndDelete(req.params.id);
+  if (!product)
+    return next(
+      new AppError(404, "can't able to delete the product please try again.")
+    );
+
+  res.status(204).json({ status: "success", data: null });
+});
