@@ -4,6 +4,7 @@ import { applyMiddleware } from "redux";
 import productListSlice from "./productListSlice";
 import productSlice from "./productSlice";
 import cartSlice from "./cartSlice";
+import userSlice from "./userSlice";
 import { configureStore } from "@reduxjs/toolkit";
 const middleware = [thunk];
 const store = configureStore(
@@ -12,6 +13,7 @@ const store = configureStore(
       productList: productListSlice,
       product: productSlice,
       cartItem: cartSlice,
+      user: userSlice,
     },
   },
   composeWithDevTools(applyMiddleware(...middleware))

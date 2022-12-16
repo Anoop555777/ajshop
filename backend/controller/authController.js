@@ -24,7 +24,12 @@ const sendToken = (user, statusCode, res) => {
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
 
   res.cookie("jwt", token, cookieOptions);
-  res.status(statusCode).json({ status: "success", token });
+  res.locals.user = user;
+  res.status(statusCode).json({
+    status: "success",
+    token,
+    user: { name: user.name, email: user.email },
+  });
 };
 
 exports.signIn = catchAsync(async (req, res, next) => {
@@ -91,6 +96,40 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   next();
 });
+
+exports.isLoggedIn = async (req, res, next) => {
+  if (req.cookies.jwt) {
+    try {
+      // 1) verify token
+
+      const decoded = await util.promisify(jwt.verify)(
+        req.cookies.jwt,
+        process.env.JWT_SECRET
+      );
+
+      // 2) Check if user still exists
+      const currentUser = await User.findById(decoded.id);
+
+      if (!currentUser) {
+        return next();
+      }
+      // 3) Check if user changed password after the token was issued
+      if (currentUser.changedPasswordAfter(decoded.iat)) {
+        return next();
+      }
+
+      // THERE IS A LOGGED IN U
+
+      res.status(200).json({
+        status: "success",
+        user: { name: currentUser.name, email: currentUser.email },
+      });
+    } catch (err) {
+      return next();
+    }
+  }
+  next();
+};
 
 exports.restictTo = (...roles) => {
   return (req, res, next) => {

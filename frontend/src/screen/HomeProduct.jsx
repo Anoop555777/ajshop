@@ -4,7 +4,7 @@ import Product from "../component/Product";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchdata } from "../store/productsActions";
 import Spinner from "./../UI/Spinner";
-import Message from "../UI/Message";
+import Message from "./../UI/Message";
 
 const HomeProduct = () => {
   const dispatch = useDispatch();
