@@ -25,6 +25,7 @@ const sendToken = (user, statusCode, res) => {
 
   res.cookie("jwt", token, cookieOptions);
   res.locals.user = user;
+
   res.status(statusCode).json({
     status: "success",
     token,
@@ -63,6 +64,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   )
     token = req.headers.authorization.split(" ")[1];
+  else if (req.cookies.jwt) token = req.cookies.jwt;
 
   if (!token) return next(new AppError(401, "please log in first"));
 
@@ -83,7 +85,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   //4 check if the user have changed the password after login
 
-  if (freshUser.changePasswordAfter(decoded.iat))
+  if (freshUser.changedPasswordAfter(decoded.iat))
     return next(
       new AppError(
         401,
@@ -149,4 +151,32 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
 
   // generate a ramdon route token
   const resetToken = user.createPasswordResetToken();
+});
+
+exports.logout = (req, res, next) => {
+  res.cookie("jwt", "loggedout", {
+    expires: new Date(Date.now() + 10),
+    httpOnly: true,
+  });
+
+  res
+    .status(200)
+    .json({ status: "success", user: { name: null, email: null } });
+};
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  //get user from the protected middleware
+  const user = await User.findById(req.user._id).select("password");
+
+  //only if user password if correct
+  if (!(await user.correctPassword(req.body.passwordCurrent, user.password)))
+    return next(new AppError(401, "enter correct password"));
+
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+
+  await user.save();
+  const userUpdateInfo = await User.findById(user._id);
+
+  sendToken(userUpdateInfo, 200, res);
 });

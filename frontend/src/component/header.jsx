@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./header.css";
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "./../store/userSlice";
+import { logout } from "./../store/userAction";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => state.user);
+
   const logoutHandler = () => {
-    dispatch(userActions.userLogoutSuccess());
+    dispatch(logout());
   };
 
   return (

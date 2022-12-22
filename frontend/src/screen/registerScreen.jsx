@@ -1,26 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Row, Col, Button, Form } from "react-bootstrap";
+import { Col, Row, Button, Form } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import Message from "./../UI/Message";
 import Spinner from "./../UI/Spinner";
-import { login } from "./../store/userAction";
-import FormContainer from "../component/FormContainer";
-const LoginScreen = () => {
+import { register } from "./../store/userAction";
+import FormContainer from "./../component/FormContainer";
+
+const RegisterScreen = () => {
+  const dispatch = useDispatch();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
-
   const { loading, user, error } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-  const { name } = user;
+  const name1 = user.name;
   useEffect(() => {
-    if (name) navigate("/");
-  }, [name, navigate]);
+    if (name1) navigate("/");
+  }, [name1, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(login(email, password));
+    dispatch(register(name, email, password, confirmPassword));
   };
 
   const emailHandler = (e) => {
@@ -31,12 +33,29 @@ const LoginScreen = () => {
     setPassword(e.target.value);
   };
 
+  const confirmPasswordHandler = (e) => {
+    setConfirmPassword(e.target.value);
+  };
+
+  const nameHandler = (e) => {
+    setName(e.target.value);
+  };
   return (
     <FormContainer>
-      <h1>Sign In</h1>
+      <h1>Register</h1>
       {error && <Message varient="danger">{error}</Message>}
       {loading && <Spinner />}
       <Form className="py-2" onSubmit={submitHandler}>
+        <Form.Group controlId="name">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            type="value"
+            placeholder="Enter your email"
+            value={name}
+            onChange={nameHandler}
+          ></Form.Control>
+        </Form.Group>
+
         <Form.Group controlId="email">
           <Form.Label>Email Address</Form.Label>
           <Form.Control
@@ -57,17 +76,26 @@ const LoginScreen = () => {
           ></Form.Control>
         </Form.Group>
 
+        <Form.Group controlId="confirmpassword">
+          <Form.Label>Confirm Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Enter Confirm Password"
+            value={confirmPassword}
+            onChange={confirmPasswordHandler}
+          ></Form.Control>
+        </Form.Group>
+
         <Button className="my-2" type="submit" variant="primary">
-          Sign In
+          Register
         </Button>
       </Form>
       <Row className="py-3">
         <Col>
-          New Customer ?<Link to="/register">Register</Link>
+          Already have an account?<Link to="/signIn">Login</Link>
         </Col>
       </Row>
     </FormContainer>
   );
 };
-
-export default LoginScreen;
+export default RegisterScreen;

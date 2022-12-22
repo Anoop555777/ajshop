@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+
 import {
   Row,
   Col,
@@ -12,12 +13,14 @@ import {
 } from "react-bootstrap";
 
 import Message from "./../UI/Message";
-import { addToCart } from "./../store/cartAction";
-import { cartActions } from "./../store/cartSlice";
+import { addToCart, removeFromCart } from "./../store/cartAction";
 
 const CartScreen = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cartItem = useSelector((state) => state.cartItem.cart);
+
+  const { user } = useSelector((state) => state.user);
 
   const location = useLocation();
   const { id } = useParams();
@@ -26,20 +29,34 @@ const CartScreen = () => {
   useEffect(() => {
     if (id) {
       dispatch(addToCart(id, qty));
+      navigate("/cart");
     }
-  }, [dispatch, id, qty]);
+  }, [dispatch, id, qty, navigate]);
+
+  useEffect(() => {
+    const cart = JSON.parse(localStorage.getItem("cart"));
+    if (cart) {
+      cart.map((el) => dispatch(addToCart(el.product, el.qty)));
+    }
+  }, [dispatch]);
 
   const revomeFromCartHander = (id) => {
-    dispatch(cartActions.removeFromCart(id));
+    dispatch(removeFromCart(id));
   };
-  const checkOutHandler = () => {};
+  const checkOutHandler = () => {
+    if (user.name) {
+      navigate("/shipping");
+    } else {
+      navigate("/signIn");
+    }
+  };
 
   return (
     <>
       <h1>Shopping Cart</h1>
       {cartItem.length === 0 ? (
         <Message>
-          Your cart is empty <Link to="/">Go back</Link>{" "}
+          Your cart is empty <Link to="/">Go back</Link>
         </Message>
       ) : (
         <Row>
@@ -109,7 +126,7 @@ const CartScreen = () => {
                     className="btn-block"
                     onClick={checkOutHandler}
                   >
-                    Proceed To Checkout
+                    {user.name ? `Proceed To Checkout` : "Login First"}
                   </Button>
                 </ListGroup.Item>
               </ListGroup>

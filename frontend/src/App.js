@@ -10,7 +10,9 @@ import CartScreen from "./screen/CartScreen";
 import LoginScreen from "./screen/LoginScreen";
 import { useDispatch } from "react-redux";
 import { isLoggedIn } from "./store/userAction";
-
+import RegisterScreen from "./screen/registerScreen";
+import ProfileScreen from "./screen/ProfileScreen";
+import ShippingAddress from "./screen/ShippingScreen";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -27,6 +29,9 @@ function App() {
             <Route path="cart/:id" element={<CartScreen />} />
             <Route path="cart" element={<CartScreen />} />
             <Route path="signIn" element={<LoginScreen />} />
+            <Route path="register" element={<RegisterScreen />} />
+            <Route path="profile" element={<ProfileScreen />} />
+            <Route path="shipping" element={<ShippingAddress />} />
           </Routes>
         </Container>
       </main>
