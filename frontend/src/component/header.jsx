@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./header.css";
 import { Container, Navbar, Nav, NavDropdown } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
@@ -13,6 +13,8 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch(logout());
+    navigate("/");
+    window.location.reload();
   };
 
   return (

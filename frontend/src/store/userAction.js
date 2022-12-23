@@ -68,6 +68,8 @@ export const logout = () => async (dispatch) => {
   });
 
   dispatch(userActions.userLogoutSuccess(data));
+  if (localStorage.getItem("cart")) localStorage.removeItem("cart");
+  if (localStorage.getItem("shipping")) localStorage.removeItem("shipping");
 };
 
 export const updateMe = (name, email) => async (dispatch) => {
