@@ -1,22 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "./../UI/Message";
 
 import CheckoutSteps from "./../component/CheckoutSteps";
+import { createOrder } from "./../store/orderAction";
 
 const PlaceOrder = () => {
   const cartItem = useSelector((state) => state.cartItem.cart);
-
+  const { success, error, order } = useSelector((state) => state.order);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const shipping = JSON.parse(localStorage.getItem("shipping"));
   const cart1 = JSON.parse(localStorage.getItem("cart"));
   useEffect(() => {
-    if (!shipping || !cart1) {
+    if (!shipping || !cart1 || cartItem.length === 0) {
       navigate("/");
     }
   });
+
+  useEffect(() => {
+    if (success) navigate(`/order/${order._id}`);
+  }, [success, navigate, order]);
+
   const cart = {};
   cart.itemsPrice = cartItem.reduce(
     (acc, item) => acc + item.price * item.qty,
@@ -32,7 +39,20 @@ const PlaceOrder = () => {
     cart.taxPrice
   ).toFixed(2);
 
-  const placeOrderHandler = () => {};
+  const placeOrderHandler = (e) => {
+    e.preventDefault();
+    dispatch(
+      createOrder({
+        orderItems: cartItem,
+        shippingAddress: shipping,
+        paymentMethod: "payPal",
+        itemsPrice: cart.itemsPrice,
+        shippingPrice: cart.shippingPrice,
+        taxPrice: cart.taxPrice,
+        totalPrice: cart.totalPrice,
+      })
+    );
+  };
 
   return (
     <>
@@ -117,15 +137,19 @@ const PlaceOrder = () => {
                   <Col>₹{cart.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-
-              <Button
-                type="button"
-                className="btn-block"
-                disabled={cart.cartItems === 0}
-                onClick={placeOrderHandler}
-              >
-                Place Order
-              </Button>
+              <ListGroup.Item>
+                {error && <Message variant="danger">{error}</Message>}
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Button
+                  type="button"
+                  className="btn-block"
+                  disabled={cart.cartItems === 0}
+                  onClick={placeOrderHandler}
+                >
+                  Place Order
+                </Button>
+              </ListGroup.Item>
             </ListGroup>
           </Card>
         </Col>
