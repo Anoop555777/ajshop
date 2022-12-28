@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const orderSlice = createSlice({
   name: "orderList",
-  initialState: { order: null, loading: false, error: false, success: false },
+  initialState: { order: {}, loading: false, error: false, success: false },
   reducers: {
     orderRequest(state) {
       state.loading = true;

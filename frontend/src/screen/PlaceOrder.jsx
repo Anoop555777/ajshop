@@ -21,7 +21,7 @@ const PlaceOrder = () => {
   });
 
   useEffect(() => {
-    if (success) navigate(`/order/${order._id}`);
+    if (success) navigate(`/orders/${order._id}`);
   }, [success, navigate, order]);
 
   const cart = {};

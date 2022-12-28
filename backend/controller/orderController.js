@@ -12,3 +12,10 @@ exports.createOrder = catchAsync(async (req, res, next) => {
 
   res.status(201).json({ status: "success", data: { order } });
 });
+
+exports.getOrder = catchAsync(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+  if (!order) return next(new AppError(404, "dont have a order of this id"));
+
+  res.status(200).json({ status: "success", data: { order } });
+});
