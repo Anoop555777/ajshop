@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import Message from "../UI/Message";
 import Spinner from "../UI/Spinner";
 import { getOrder } from "./../store/orderAction";
+import axios from "axios";
 const OrdersScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,6 +20,11 @@ const OrdersScreen = () => {
 
   useEffect(() => {
     if (!order._id) dispatch(getOrder(id));
+    async function getClientId() {
+      const { data } = await axios.get("/api/v1/config/paypal");
+      console.log(data);
+    }
+    getClientId();
   }, [dispatch, id, order]);
 
   const order1 = {};

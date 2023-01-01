@@ -13,6 +13,9 @@ app.use(express.json({ limit: "10kb" }));
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/orders", orderRouter);
+app.get("/api/v1/config/paypal", (req, res) => {
+  res.send(process.env.PAYPAL_CLIENT_ID);
+});
 app.use(globalErrorHandler);
 
 module.exports = app;
