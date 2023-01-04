@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
+import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Message from "../UI/Message";
 import Spinner from "../UI/Spinner";
-import { getOrder, getPaid } from "./../store/orderAction";
+import { getOrder, getSession } from "./../store/orderAction";
 import axios from "axios";
-import { PayPalButton } from "react-paypal-button-v2";
+
+// const stripe = Stripe(
+//   "pk_test_51MM6CoSBmivHvCB6Ly5VN8fifBkg4JsFH3MGSOYEt4K2BjBWyxtLBmC21jNgXgcerPvIBrEP0U33LAJRcfjJqS0Q00ZHZO6l7d"
+// );
+
 const OrdersScreen = () => {
   const [sdkReady, setSDKReady] = useState(false);
 
@@ -26,23 +30,11 @@ const OrdersScreen = () => {
 
   useEffect(() => {
     if (!order._id) dispatch(getOrder(id));
-    async function getClientId() {
-      const { data } = await axios.get("/api/v1/config/paypal");
-      const script = document.createElement("script");
-      script.type = "text/javascript";
-      script.async = true;
-      script.src = `https://www.paypal.com/sdk/js?client-id=${data}`;
-      script.onload = () => {
-        setSDKReady(true);
-      };
-      document.body.appendChild(script);
-    }
 
     if (!order.isPaid) {
-      if (!window.paypal) getClientId();
-      else setSDKReady(true);
+      setSDKReady(true);
     }
-  }, [dispatch, id, order, successPay]);
+  }, [dispatch, id, order]);
 
   const order1 = {};
   if (order._id)
@@ -51,9 +43,8 @@ const OrdersScreen = () => {
       0
     );
 
-  const successPaymentHandler = (paymentResult) => {
-    console.log(paymentResult);
-    dispatch(getPaid(id, paymentResult));
+  const successPaymentHandler = () => {
+    dispatch(getSession(id));
   };
 
   return loading ? (
@@ -173,10 +164,13 @@ const OrdersScreen = () => {
                   {!sdkReady ? (
                     <Spinner />
                   ) : (
-                    <PayPalButton
-                      amount={order.totalPrice}
-                      onSuccess={successPaymentHandler}
-                    />
+                    <Button
+                      type="submit"
+                      variant="primary"
+                      onClick={successPaymentHandler}
+                    >
+                      Pay
+                    </Button>
                   )}
                 </ListGroup.Item>
               )}

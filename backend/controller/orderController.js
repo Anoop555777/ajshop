@@ -40,20 +40,35 @@ exports.getCheckoutSession = catchAsync(async (req, res) => {
   //1) get the order details
   const order = await Order.findById(req.params.orderId);
   const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+  const listItem = order.orderItems.map((el) => {
+    return {
+      quantity: el.qty,
+      price_data: {
+        currency: "inr",
+        unit_amount:
+          (el.price +
+            order.taxPrice / (order.orderItems.length * el.qty) +
+            order.shippingPrice / order.orderItems.length) *
+          100,
+
+        product_data: {
+          description: el.name,
+          name: el.name,
+          images: [`${req.protocol}://${req.get("host")}${el.image}`],
+        },
+      },
+    };
+  });
+
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
 
-    success_url: `${req.protocol}://${req.get("host")}/orders/${
-      req.params.orderId
-    }`,
+    success_url: `http://127.0.0.1:3000/orders/${req.params.orderId}`,
     cancel_url: `${req.protocol}://${req.get("host")}/`,
     customer_email: req.user.email,
     client_reference_id: req.params.orderId,
-    line_items: [
-      {
-        price: order.totalPrice,
-      },
-    ],
+    line_items: listItem,
+    mode: "payment",
   });
 
   //create a session as response
