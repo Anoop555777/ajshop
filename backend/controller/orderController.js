@@ -22,18 +22,32 @@ exports.getOrder = catchAsync(async (req, res, next) => {
 });
 
 exports.updateOrderToPaid = catchAsync(async (req, res, next) => {
-  const order = await Order.findById(req.params.id);
-  if (!order) return next(new AppError(404, "dont have a order of this id"));
-  order.isPaid = true;
-  order.paymentResult = {
-    id: req.body.id,
-    status: req.body.status,
-    update_time: req.body.update_time,
-    email_address: req.user._id,
-  };
-  const updateOrder = await order.save();
+  const getorder = await Order.findById(req.params.id).populate("user");
+  if (!getorder) return next(new AppError(404, "dont have a order of this id"));
 
-  res.status(200).json({ status: "success", data: { updateOrder } });
+  const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+  const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
+
+  console.log(session);
+
+  if (!session)
+    return next(new AppError(404, "dont have a key please pay again"));
+
+  if (session.customer_email !== getorder.user.email)
+    return next(new AppError(404, "something went wrong"));
+
+  getorder.isPaid = true;
+  getorder.paymentResult = {
+    id: session.payment_intent,
+    status: session.status,
+    update_time: new Date(session.created),
+    email_address: session.customer_email,
+  };
+
+  getorder.paidAt = session.created;
+  const order = await getorder.save();
+
+  res.status(200).json({ status: "success", data: { order } });
 });
 
 exports.getCheckoutSession = catchAsync(async (req, res) => {
@@ -63,7 +77,7 @@ exports.getCheckoutSession = catchAsync(async (req, res) => {
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
 
-    success_url: `http://127.0.0.1:3000/orders/${req.params.orderId}`,
+    success_url: `http://127.0.0.1:3000/orders/${req.params.orderId}?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${req.protocol}://${req.get("host")}/`,
     customer_email: req.user.email,
     client_reference_id: req.params.orderId,

@@ -9,7 +9,7 @@ import FormContainer from "./../component/FormContainer";
 
 const PaymentScreen = () => {
   const navigate = useNavigate();
-  const [paymentMethod, setPaymentMethod] = useState("PayPal");
+  const [paymentMethod, setPaymentMethod] = useState("Stripe");
 
   let { loading, user, error } = useSelector((state) => state.user);
 

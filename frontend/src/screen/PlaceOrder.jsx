@@ -14,6 +14,7 @@ const PlaceOrder = () => {
   const navigate = useNavigate();
   const shipping = JSON.parse(localStorage.getItem("shipping"));
   const cart1 = JSON.parse(localStorage.getItem("cart"));
+
   useEffect(() => {
     if (!shipping || !cart1 || cartItem.length === 0) {
       navigate("/");
@@ -45,7 +46,7 @@ const PlaceOrder = () => {
       createOrder({
         orderItems: cartItem,
         shippingAddress: shipping,
-        paymentMethod: "payPal",
+        paymentMethod: "Stripe",
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,

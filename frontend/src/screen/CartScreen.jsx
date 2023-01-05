@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { orderAction } from "../store/orderSlice";
 
 import {
   Row,
@@ -19,12 +20,16 @@ const CartScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cartItem = useSelector((state) => state.cartItem.cart);
-
+  const { order } = useSelector((state) => state.order);
   const { user } = useSelector((state) => state.user);
 
   const location = useLocation();
   const { id } = useParams();
   const qty = location.search ? +location.search.split("=")[1] : 1;
+
+  useEffect(() => {
+    if (order._id) dispatch(orderAction.orderReset());
+  }, [dispatch, order]);
 
   useEffect(() => {
     if (id) {

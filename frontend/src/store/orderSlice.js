@@ -16,6 +16,12 @@ const orderSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    orderReset(state) {
+      state.order = {};
+      state.success = false;
+      state.loading = false;
+      state.error = false;
+    },
   },
 });
 

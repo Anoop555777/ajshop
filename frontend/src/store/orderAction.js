@@ -55,8 +55,25 @@ export const getSession = (id) => async (dispatch) => {
     await stripe.redirectToCheckout({
       sessionId: session.data.session.id,
     });
+  } catch (err) {
+    dispatch(
+      orderPayAction.orderFail(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      )
+    );
+  }
+};
 
-    dispatch(orderPayAction.orderSuccess());
+export const getOrderToPaid = (session, id) => async (dispatch) => {
+  try {
+    const { data } = await axios({
+      method: "PATCH",
+      url: `/api/v1/orders/${id}/paid?session_id=${session}`,
+    });
+
+    dispatch(orderAction.orderSuccess(data.data));
   } catch (err) {
     dispatch(
       orderPayAction.orderFail(

@@ -7,8 +7,8 @@ const router = express.Router();
 router.route("/").post(authController.protect, orderController.createOrder);
 router.route("/:id").get(authController.protect, orderController.getOrder);
 router
-  .route("/:id/pay")
-  .put(authController.protect, orderController.updateOrderToPaid);
+  .route("/:id/paid")
+  .patch(authController.protect, orderController.updateOrderToPaid);
 
 router.get(
   "/checkout-session/:orderId",
