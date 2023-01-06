@@ -1,5 +1,5 @@
 import { orderAction } from "./orderSlice";
-import { orderPayAction } from "./orderPaySlice";
+
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -57,7 +57,7 @@ export const getSession = (id) => async (dispatch) => {
     });
   } catch (err) {
     dispatch(
-      orderPayAction.orderFail(
+      orderAction.orderFail(
         err.response && err.response.data.message
           ? err.response.data.message
           : err.message
@@ -76,7 +76,7 @@ export const getOrderToPaid = (session, id) => async (dispatch) => {
     dispatch(orderAction.orderSuccess(data.data));
   } catch (err) {
     dispatch(
-      orderPayAction.orderFail(
+      orderAction.orderFail(
         err.response && err.response.data.message
           ? err.response.data.message
           : err.message

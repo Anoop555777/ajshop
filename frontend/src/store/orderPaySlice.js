@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-const orderPaySlice = createSlice({
+const orderList = createSlice({
   name: "orderPay",
   initialState: { state: { loading: false, error: false, success: false } },
   reducers: {
@@ -19,6 +19,6 @@ const orderPaySlice = createSlice({
     },
   },
 });
-export const orderPayAction = orderPaySlice.actions;
+export const orderPayAction = orderList.actions;
 
-export default orderPaySlice.reducer;
+export default orderList.reducer;

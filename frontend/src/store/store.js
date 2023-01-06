@@ -7,7 +7,7 @@ import cartSlice from "./cartSlice";
 import userSlice from "./userSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import orderSlice from "./orderSlice";
-import orderPaySlice from "./orderPaySlice";
+import orderList from "./orderPaySlice";
 const middleware = [thunk];
 const store = configureStore(
   {
@@ -17,7 +17,7 @@ const store = configureStore(
       cartItem: cartSlice,
       user: userSlice,
       order: orderSlice,
-      orderPay: orderPaySlice,
+      orderList: orderList,
     },
   },
   composeWithDevTools(applyMiddleware(...middleware))

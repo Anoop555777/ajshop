@@ -11,6 +11,12 @@ router
   .patch(authController.protect, orderController.updateOrderToPaid);
 
 router.get(
+  "/myorders",
+  authController.protect,
+  orderController.getAllOrderByUser
+);
+
+router.get(
   "/checkout-session/:orderId",
   authController.protect,
   orderController.getCheckoutSession

@@ -28,8 +28,6 @@ exports.updateOrderToPaid = catchAsync(async (req, res, next) => {
   const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
   const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
 
-  console.log(session);
-
   if (!session)
     return next(new AppError(404, "dont have a key please pay again"));
 
@@ -40,11 +38,11 @@ exports.updateOrderToPaid = catchAsync(async (req, res, next) => {
   getorder.paymentResult = {
     id: session.payment_intent,
     status: session.status,
-    update_time: new Date(session.created),
+    update_time: new Date(session.created * 1000),
     email_address: session.customer_email,
   };
 
-  getorder.paidAt = session.created;
+  getorder.paidAt = session.created * 1000;
   const order = await getorder.save();
 
   res.status(200).json({ status: "success", data: { order } });
@@ -91,4 +89,13 @@ exports.getCheckoutSession = catchAsync(async (req, res) => {
     status: "success",
     session,
   });
+});
+
+exports.getOrderByUser = catchAsync(async (req, res) => {
+  const order = Order.find({ user: req.user._id });
+  if (!order)
+    return next(new AppError(404, "sorry no order for this user Buy some!!!"));
+
+    
+
 });

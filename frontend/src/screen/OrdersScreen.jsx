@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
-import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 import Message from "../UI/Message";
 import Spinner from "../UI/Spinner";
 import { getOrderToPaid, getOrder, getSession } from "./../store/orderAction";
-import axios from "axios";
 
 // const stripe = Stripe(
 //   "pk_test_51MM6CoSBmivHvCB6Ly5VN8fifBkg4JsFH3MGSOYEt4K2BjBWyxtLBmC21jNgXgcerPvIBrEP0U33LAJRcfjJqS0Q00ZHZO6l7d"
@@ -16,7 +15,7 @@ const OrdersScreen = () => {
   const location = useLocation();
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   const { id } = useParams();
   const queryParam = new URLSearchParams(location.search);
   const session = queryParam.get("session_id");
@@ -25,19 +24,15 @@ const OrdersScreen = () => {
 
   const { order, loading, error } = useSelector((state) => state.order);
   const { user } = useSelector((state) => state.user);
-  const { loading: loadingPay, success: successPay } = useSelector(
-    (state) => state.orderPay.state
-  );
 
   error1 = error;
   error1 = error || user.error;
 
   useEffect(() => {
-    if (session) {
-      console.log("hi");
+    if (session && !order.isPaid) {
       dispatch(getOrderToPaid(session, id));
     }
-  }, [session, id, dispatch]);
+  }, [session, id, dispatch, order]);
 
   useEffect(() => {
     if (!order._id) dispatch(getOrder(id));
@@ -171,7 +166,7 @@ const OrdersScreen = () => {
               </ListGroup.Item>
               {!order.isPaid && (
                 <ListGroup.Item>
-                  {loadingPay && <Spinner />}
+                  {loading && <Spinner />}
                   {!sdkReady ? (
                     <Spinner />
                   ) : (
