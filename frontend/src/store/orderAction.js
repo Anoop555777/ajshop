@@ -17,6 +17,16 @@ export const createOrder = (orderData) => async (dispatch) => {
     });
 
     dispatch(orderAction.orderSuccess(data.data));
+
+    orderData.orderItems.map(async (order) => {
+      const { qty } = order;
+
+      return await axios({
+        method: "PATCH",
+        url: `/api/v1/products/updateQty/${order.product}`,
+        data: { qty },
+      });
+    });
   } catch (err) {
     dispatch(
       orderAction.orderFail(

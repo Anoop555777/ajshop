@@ -19,4 +19,8 @@ router
     productController.deleteProduct
   );
 
+router
+  .route("/updateQty/:id")
+  .patch(authController.protect, productController.updateProductQty);
+
 module.exports = router;

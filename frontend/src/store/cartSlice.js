@@ -25,6 +25,9 @@ const cartSlice = createSlice({
 
       state.cart.splice(itemIndex, 1);
     },
+    cartReset(state) {
+      state.cart = [];
+    },
   },
 });
 

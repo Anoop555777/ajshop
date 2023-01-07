@@ -1,5 +1,8 @@
 import axios from "axios";
 import { userActions } from "./userSlice";
+import { orderListAction } from "./orderListSlice";
+import { orderAction } from "./orderSlice";
+import { cartActions } from "./cartSlice";
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -63,13 +66,26 @@ export const isLoggedIn = () => async (dispatch) => {
 };
 
 export const logout = () => async (dispatch) => {
-  const { data } = await axios({
-    url: "/api/v1/users/logout",
-  });
+  try {
+    const { data } = await axios({
+      url: "/api/v1/users/logout",
+    });
 
-  dispatch(userActions.userLogoutSuccess(data));
-  if (localStorage.getItem("cart")) localStorage.removeItem("cart");
-  if (localStorage.getItem("shipping")) localStorage.removeItem("shipping");
+    dispatch(userActions.userLogoutSuccess(data));
+    if (localStorage.getItem("cart")) localStorage.removeItem("cart");
+    if (localStorage.getItem("shipping")) localStorage.removeItem("shipping");
+    dispatch(cartActions.cartReset());
+    dispatch(orderListAction.orderReset());
+    dispatch(orderAction.orderReset());
+  } catch (err) {
+    dispatch(
+      userActions.userLogoutFailure(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      )
+    );
+  }
 };
 
 export const updateMe = (name, email) => async (dispatch) => {

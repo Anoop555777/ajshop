@@ -35,6 +35,10 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    userLogoutFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
     userLogoutRequest(state, action) {
       state.loading = true;
     },

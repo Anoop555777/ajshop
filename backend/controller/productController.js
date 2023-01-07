@@ -42,3 +42,19 @@ exports.deleteProduct = catchAsync(async (req, res, next) => {
 
   res.status(204).json({ status: "success", data: null });
 });
+
+exports.updateProductQty = catchAsync(async (req, res) => {
+  const product = await Product.findById(req.params.id);
+
+  if (!product) {
+    return next(new AppError(404, "Product not found"));
+  }
+  if (product.countInStock === 0)
+    return next(new AppError(404, "out of stock"));
+
+  product.countInStock = product.countInStock - req.body.qty;
+
+  await product.save();
+
+  res.status(200);
+});

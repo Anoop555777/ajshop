@@ -2,7 +2,8 @@ const Product = require("./../model/productModel");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const product = require("./products");
-dotenv.config({ path: "./config.env" });
+dotenv.config({ path: "./../../config.env" });
+
 const DB = process.env.DATABASE.replace(
   "<password>",
   process.env.DATABASE_PASSWORD

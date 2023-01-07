@@ -28,10 +28,13 @@ exports.userMe = catchAsync(async (req, res, next) => {
     runValidators: true,
   });
 
-  res
-    .status(200)
-    .json({
-      status: "success",
-      user: { name: updateUser.name, email: updateUser.email },
-    });
+  res.status(200).json({
+    status: "success",
+    user: { name: updateUser.name, email: updateUser.email },
+  });
+});
+
+exports.getAllUsers = catchAsync(async (req, res) => {
+  const users = User.find();
+  res.send(200).json({ status: "success", data: users });
 });

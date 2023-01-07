@@ -91,11 +91,13 @@ exports.getCheckoutSession = catchAsync(async (req, res) => {
   });
 });
 
-exports.getOrderByUser = catchAsync(async (req, res) => {
-  const order = Order.find({ user: req.user._id });
+exports.getAllOrderByUser = catchAsync(async (req, res) => {
+  const order = await Order.find({ user: req.user._id });
+
   if (!order)
     return next(new AppError(404, "sorry no order for this user Buy some!!!"));
 
-    
-
+  res
+    .status(200)
+    .json({ status: "success", result: order.length, data: { order } });
 });

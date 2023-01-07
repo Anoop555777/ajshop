@@ -14,4 +14,8 @@ router.patch(
   authController.updatePassword
 );
 
+router.use(authController.protect);
+router.use(authController.restictTo("admin"));
+router.route("/").get(userController.getAllUsers);
+
 module.exports = router;
