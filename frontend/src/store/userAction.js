@@ -3,6 +3,8 @@ import { userActions } from "./userSlice";
 import { orderListAction } from "./orderListSlice";
 import { orderAction } from "./orderSlice";
 import { cartActions } from "./cartSlice";
+import { userListAction } from "./userListSlice";
+import { userDetailAction } from "./userDetailSlice";
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -71,12 +73,16 @@ export const logout = () => async (dispatch) => {
       url: "/api/v1/users/logout",
     });
 
+    console.log(data);
+
     dispatch(userActions.userLogoutSuccess(data));
     if (localStorage.getItem("cart")) localStorage.removeItem("cart");
     if (localStorage.getItem("shipping")) localStorage.removeItem("shipping");
     dispatch(cartActions.cartReset());
     dispatch(orderListAction.orderReset());
     dispatch(orderAction.orderReset());
+    dispatch(userActions.userReset());
+    dispatch(userListAction.userListReset());
   } catch (err) {
     dispatch(
       userActions.userLogoutFailure(
@@ -140,3 +146,88 @@ export const updateMyPassword =
       );
     }
   };
+
+export const getAllUsers = () => async (dispatch) => {
+  try {
+    dispatch(userListAction.userListRequest());
+
+    const { data } = await axios({
+      method: "GET",
+      url: "/api/v1/users",
+    });
+
+    dispatch(userListAction.userListSuccess(data.data));
+  } catch (err) {
+    console.log(err.message);
+    dispatch(
+      userListAction.userListFailure(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      )
+    );
+  }
+};
+
+export const deleteUser = (id) => async (dispatch) => {
+  try {
+    dispatch(userListAction.userListRequest());
+
+    await axios({
+      method: "DELETE",
+      url: `/api/v1/users/${id}`,
+    });
+
+    dispatch(userListAction.userDelete());
+  } catch (err) {
+    console.log(err.message);
+    dispatch(
+      userListAction.userListFailure(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      )
+    );
+  }
+};
+
+export const updateUserToAdmin = (id) => async (dispatch) => {
+  try {
+    dispatch(userListAction.userListRequest());
+
+    await axios({
+      method: "PATCH",
+      url: `/api/v1/users/${id}`,
+    });
+  } catch (err) {
+    console.log(err.message);
+    dispatch(
+      userListAction.userListFailure(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      )
+    );
+  }
+};
+
+export const getUser = (id) => async (dispatch) => {
+  try {
+    dispatch(userDetailAction.userDetailRequest());
+
+    const { data } = await axios({
+      method: "GET",
+      url: `/api/v1/users/${id}`,
+    });
+    dispatch(userDetailAction.userDetailSuccess(data.data));
+  } catch (err) {
+    console.log(err.message);
+    dispatch(
+      userDetailAction.userDetailFailure(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      )
+    );
+  }
+};

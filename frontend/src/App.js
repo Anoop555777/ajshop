@@ -16,6 +16,8 @@ import ShippingAddress from "./screen/ShippingScreen";
 import PaymentScreen from "./screen/PaymentScreen";
 import PlaceOrderScreen from "./screen/PlaceOrder";
 import OrderScreen from "./screen/OrdersScreen";
+import UserListScreen from "./screen/UserListScreen";
+import UserEditScreen from "./screen/UserEditScreen";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -38,6 +40,10 @@ function App() {
             <Route path="payment" element={<PaymentScreen />} />
             <Route path="placeOrder" element={<PlaceOrderScreen />} />
             <Route path="orders/:id" element={<OrderScreen />} />
+
+            <Route path="admin/userlist" element={<UserListScreen />} />
+
+            <Route path="admin/user/:id/edit" element={<UserEditScreen />} />
           </Routes>
         </Container>
       </main>

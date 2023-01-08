@@ -29,7 +29,7 @@ const sendToken = (user, statusCode, res) => {
   res.status(statusCode).json({
     status: "success",
     token,
-    user: { name: user.name, email: user.email },
+    user: { name: user.name, email: user.email, role: user.role },
   });
 };
 
@@ -48,7 +48,7 @@ exports.logIn = catchAsync(async (req, res, next) => {
 
   //check if the user exist and password is correct
 
-  const user = await User.findOne({ email }).select("+password");
+  const user = await User.findOne({ email }).select("+password +role");
 
   if (!user || !(await user.correctPassword(password, user.password)))
     return next(new AppError(401, "please correct your email and password"));
@@ -110,7 +110,7 @@ exports.isLoggedIn = async (req, res, next) => {
       );
 
       // 2) Check if user still exists
-      const currentUser = await User.findById(decoded.id);
+      const currentUser = await User.findById(decoded.id).select("+role");
 
       if (!currentUser) {
         return next();
@@ -124,7 +124,11 @@ exports.isLoggedIn = async (req, res, next) => {
 
       res.status(200).json({
         status: "success",
-        user: { name: currentUser.name, email: currentUser.email },
+        user: {
+          name: currentUser.name,
+          email: currentUser.email,
+          role: currentUser.role,
+        },
       });
     } catch (err) {
       return next();
@@ -140,6 +144,8 @@ exports.restictTo = (...roles) => {
         new AppError(403, "You are forbidden to do operation in this doc")
       );
     }
+
+    req.success = true;
     next();
   };
 };
@@ -161,7 +167,7 @@ exports.logout = (req, res, next) => {
 
   res
     .status(200)
-    .json({ status: "success", user: { name: null, email: null } });
+    .json({ status: "success", user: { name: null, email: null, role: null } });
 };
 
 exports.updatePassword = catchAsync(async (req, res, next) => {

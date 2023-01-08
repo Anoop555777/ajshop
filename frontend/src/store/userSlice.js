@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: { name: null, email: null },
+    user: { name: null, email: null, role: null },
     success: false,
     loading: false,
     error: false,
@@ -16,6 +16,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.user.name = action.payload.user.name;
       state.user.email = action.payload.user.email;
+      state.user.role = action.payload.user.role;
       state.error = null;
     },
     userRegisterFail(state, action) {
@@ -29,6 +30,7 @@ const userSlice = createSlice({
       state.loading = false;
       state.user.name = action.payload.user.name;
       state.user.email = action.payload.user.email;
+      state.user.role = action.payload.user.role;
       state.error = null;
     },
     userLoginFailure(state, action) {
@@ -46,11 +48,13 @@ const userSlice = createSlice({
       state.loading = false;
       state.user.name = action.payload.user.name;
       state.user.email = action.payload.user.email;
+      state.user.role = action.payload.user.role;
       state.error = null;
     },
     isLoggedIn(state, action) {
       state.user.name = action.payload.user.name;
       state.user.email = action.payload.user.email;
+      state.user.role = action.payload.user.role;
     },
 
     updateMeRequest(state) {
@@ -66,6 +70,14 @@ const userSlice = createSlice({
       state.error = null;
       state.success = true;
       state.loading = false;
+    },
+    userReset(state) {
+      state.loading = false;
+      state.error = false;
+      state.success = false;
+      state.user.name = null;
+      state.user.email = null;
+      state.user.role = null;
     },
   },
 });

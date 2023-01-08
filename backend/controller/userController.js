@@ -21,20 +21,48 @@ exports.userMe = catchAsync(async (req, res, next) => {
     );
 
   //filter field names
-
-  const filterBody = filterObj(req.body, "name", "email");
-  const updateUser = await User.findByIdAndUpdate(req.user._id, filterBody, {
-    new: true,
-    runValidators: true,
-  });
+  let updateUser;
+  if (req.success) {
+    updateUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        role: req.body.role,
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+  } else {
+    const filterBody = filterObj(req.body, "name", "email");
+    updateUser = await User.findByIdAndUpdate(req.user._id, filterBody, {
+      new: true,
+      runValidators: true,
+    });
+  }
 
   res.status(200).json({
     status: "success",
-    user: { name: updateUser.name, email: updateUser.email },
+    user: {
+      name: updateUser.name,
+      email: updateUser.email,
+      role: updateUser.role,
+    },
   });
 });
 
 exports.getAllUsers = catchAsync(async (req, res) => {
-  const users = User.find();
-  res.send(200).json({ status: "success", data: users });
+  const users = await User.find().select("+role");
+  res.status(200).json({ status: "success", data: users });
+});
+
+exports.deleteUser = catchAsync(async (req, res) => {
+  const user = await User.findByIdAndDelete(req.params.id);
+  res.status(201).json({ status: "success", data: null });
+});
+
+exports.getUser = catchAsync(async (req, res) => {
+  const user = await User.findById(req.params.id).select("+role");
+  if (!user) return next(new AppError(404, "User not found"));
+  res.status(200).json({ status: "success", data: user });
 });

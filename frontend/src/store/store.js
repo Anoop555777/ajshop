@@ -8,6 +8,8 @@ import userSlice from "./userSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import orderSlice from "./orderSlice";
 import orderList from "./orderListSlice";
+import userList from "./userListSlice";
+import userDetailSlice from "./userDetailSlice";
 const middleware = [thunk];
 const store = configureStore(
   {
@@ -18,6 +20,8 @@ const store = configureStore(
       user: userSlice,
       order: orderSlice,
       orderList: orderList,
+      userList: userList,
+      userDetail: userDetailSlice,
     },
   },
   composeWithDevTools(applyMiddleware(...middleware))
