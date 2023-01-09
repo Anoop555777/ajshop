@@ -191,18 +191,20 @@ export const deleteUser = (id) => async (dispatch) => {
   }
 };
 
-export const updateUserToAdmin = (id) => async (dispatch) => {
+export const updateUserToAdmin = (id, role) => async (dispatch) => {
   try {
-    dispatch(userListAction.userListRequest());
+    dispatch(userDetailAction.userDetailRequest());
 
     await axios({
       method: "PATCH",
       url: `/api/v1/users/${id}`,
+      data: { role },
     });
+    dispatch(userDetailAction.userDetailUpdate());
   } catch (err) {
     console.log(err.message);
     dispatch(
-      userListAction.userListFailure(
+      userListAction.userDetailFailure(
         err.response && err.response.data.message
           ? err.response.data.message
           : err.message

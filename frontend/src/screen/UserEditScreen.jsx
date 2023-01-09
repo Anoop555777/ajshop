@@ -1,34 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import Spinner from "./../UI/Spinner";
 import Message from "../UI/Message";
 import FormContainer from "./../component/FormContainer";
 import { useSelector, useDispatch } from "react-redux";
-import { getUser } from "./../store/userAction";
+import { getUser, updateUserToAdmin } from "./../store/userAction";
+import { userDetailAction } from "../store/userDetailSlice";
 
 const UserEditScreen = () => {
   const { id } = useParams();
-  const [admin, setIsAdmin] = useState("");
+  const navigate = useNavigate();
+  const { loading, error, user, successUpdate } = useSelector(
+    (state) => state.userDetail
+  );
+  const [admin, setIsAdmin] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
   const dispatch = useDispatch();
 
-  const { loading, error, user } = useSelector((state) => state.userDetail);
-
   useEffect(() => {
-    if (!user || user._id !== id) dispatch(getUser(id));
-    else {
-      setName(user.name);
-      setEmail(user.email);
-      setIsAdmin(user.role);
+    if (successUpdate) {
+      dispatch(userDetailAction.userDetailUpdateReset());
+      navigate("/admin/userList");
+    } else {
+      if (!user || user._id !== id) dispatch(getUser(id));
+      else {
+        setName(user.name);
+        setEmail(user.email);
+        setIsAdmin(user.role === "admin");
+      }
     }
-  }, [dispatch, id, user]);
+  }, [dispatch, id, user, successUpdate, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(getUser(id));
+    let role;
+    if (admin === true) role = "admin";
+    else role = "user";
+    dispatch(updateUserToAdmin(id, role));
   };
 
   return (
@@ -70,12 +81,12 @@ const UserEditScreen = () => {
               <Form.Check
                 type="checkbox"
                 label="Is Admin"
-                checked={admin === "admin"}
+                checked={admin}
                 onChange={(e) => setIsAdmin(e.target.checked)}
               ></Form.Check>
             </Form.Group>
 
-            <Button type="submit" variant="primary">
+            <Button className="my-3" type="submit" variant="primary">
               Update
             </Button>
           </Form>

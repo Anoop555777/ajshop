@@ -35,3 +35,23 @@ export const fetchSpecificdata = (id) => async (dispatch) => {
     );
   }
 };
+
+export const deleteProduct = (id) => async (dispatch) => {
+  try {
+    dispatch(productListActions.productListRequest());
+    await axios({
+      method: "DELETE",
+      url: `/api/v1/products/${id}`,
+    });
+
+    dispatch(productListActions.productListDelete());
+  } catch (err) {
+    dispatch(
+      productListActions.productListFail(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      )
+    );
+  }
+};

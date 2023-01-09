@@ -6,6 +6,7 @@ const userDetailSlice = createSlice({
     user: null,
     loading: false,
     error: false,
+    successUpdate: false,
   },
   reducers: {
     userDetailRequest(state) {
@@ -23,6 +24,13 @@ const userDetailSlice = createSlice({
       state.loading = false;
       state.error = false;
       state.user = null;
+    },
+    userDetailUpdate(state) {
+      state.successUpdate = true;
+      state.loading = false;
+    },
+    userDetailUpdateReset(state) {
+      state.successUpdate = false;
     },
   },
 });
