@@ -11,7 +11,6 @@ const productListSlice = createSlice({
   reducers: {
     productListRequest(state) {
       state.loading = true;
-      state.products = [];
     },
     productListSuccess(state, action) {
       state.loading = false;
@@ -22,7 +21,7 @@ const productListSlice = createSlice({
       state.error = action.payload;
     },
     productListDelete(state) {
-      state.successDelete = true;
+      state.successDelete = !state.successDelete;
     },
   },
 });

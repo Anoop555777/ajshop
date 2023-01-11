@@ -58,7 +58,7 @@ exports.getAllUsers = catchAsync(async (req, res) => {
 
 exports.deleteUser = catchAsync(async (req, res) => {
   const user = await User.findByIdAndDelete(req.params.id);
-  res.status(201).json({ status: "success", data: null });
+  res.status(204).json({ status: "success", data: null });
 });
 
 exports.getUser = catchAsync(async (req, res) => {

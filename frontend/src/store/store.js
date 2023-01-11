@@ -10,6 +10,8 @@ import orderSlice from "./orderSlice";
 import orderList from "./orderListSlice";
 import userList from "./userListSlice";
 import userDetailSlice from "./userDetailSlice";
+import productCreateSlice from "./productCreateSlice";
+import productEditSlice from "./productEditSlice";
 const middleware = [thunk];
 const store = configureStore(
   {
@@ -22,6 +24,8 @@ const store = configureStore(
       orderList: orderList,
       userList: userList,
       userDetail: userDetailSlice,
+      productCreate: productCreateSlice,
+      productEdit: productEditSlice,
     },
   },
   composeWithDevTools(applyMiddleware(...middleware))

@@ -19,6 +19,8 @@ import OrderScreen from "./screen/OrdersScreen";
 import UserListScreen from "./screen/UserListScreen";
 import UserEditScreen from "./screen/UserEditScreen";
 import ProductListScreen from "./screen/ProductList";
+import CreateProductScreen from "./screen/CreateProductScreen";
+import ProductEditScreen from "./screen/productEditScreen";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -47,6 +49,15 @@ function App() {
             <Route path="admin/user/:id/edit" element={<UserEditScreen />} />
 
             <Route path="admin/productlist" element={<ProductListScreen />} />
+            <Route
+              path="admin/product/:id/edit"
+              element={<ProductEditScreen />}
+            />
+
+            <Route
+              path="admin/createProduct"
+              element={<CreateProductScreen />}
+            />
           </Routes>
         </Container>
       </main>

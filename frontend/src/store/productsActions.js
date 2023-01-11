@@ -1,5 +1,7 @@
 import { productListActions } from "./productListSlice";
 import { productActions } from "./productSlice";
+import { productCreateActions } from "./productCreateSlice";
+import { productEditActions } from "./productEditSlice";
 import axios from "axios";
 
 export const fetchdata = () => async (dispatch) => {
@@ -48,6 +50,48 @@ export const deleteProduct = (id) => async (dispatch) => {
   } catch (err) {
     dispatch(
       productListActions.productListFail(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      )
+    );
+  }
+};
+
+export const createProduct = (data) => async (dispatch) => {
+  try {
+    dispatch(productCreateActions.productCreateRequest());
+    await axios({
+      method: "POST",
+      url: `/api/v1/products`,
+      data,
+    });
+
+    dispatch(productCreateActions.productCreateSuccess());
+  } catch (err) {
+    dispatch(
+      productCreateActions.productCreateFail(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      )
+    );
+  }
+};
+
+export const productEdit = (data, id) => async (dispatch) => {
+  try {
+    dispatch(productEditActions.productEditRequest());
+    await axios({
+      method: "PATCH",
+      url: `/api/v1/products/${id}`,
+      data,
+    });
+
+    dispatch(productEditActions.productEditSuccess());
+  } catch (err) {
+    dispatch(
+      productEditActions.productEditFail(
         err.response && err.response.data.message
           ? err.response.data.message
           : err.message

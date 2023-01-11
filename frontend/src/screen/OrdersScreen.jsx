@@ -6,10 +6,6 @@ import Message from "../UI/Message";
 import Spinner from "../UI/Spinner";
 import { getOrderToPaid, getOrder, getSession } from "./../store/orderAction";
 
-// const stripe = Stripe(
-//   "pk_test_51MM6CoSBmivHvCB6Ly5VN8fifBkg4JsFH3MGSOYEt4K2BjBWyxtLBmC21jNgXgcerPvIBrEP0U33LAJRcfjJqS0Q00ZHZO6l7d"
-// );
-
 const OrdersScreen = () => {
   const [sdkReady, setSDKReady] = useState(false);
   const location = useLocation();

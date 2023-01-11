@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,6 +6,7 @@ import Spinner from "./../UI/Spinner";
 import Message from "../UI/Message";
 import { useNavigate } from "react-router-dom";
 import { fetchdata, deleteProduct } from "../store/productsActions";
+import { productListActions } from "../store/productListSlice";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
@@ -14,22 +15,21 @@ const ProductListScreen = () => {
     (state) => state.productList
   );
 
-  const [del, setDelete] = useState(successDelete);
-
   const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
-    if (products.length === 0 || del) {
-      dispatch(fetchdata());
-      setDelete(false);
+    if (!user || user.role !== "admin") {
+      navigate("/signin");
     }
-  }, [dispatch, navigate, user, del, products.length]);
+    dispatch(fetchdata());
+    if (successDelete) {
+      dispatch(productListActions.productListDelete());
+    }
+  }, [dispatch, navigate, successDelete, user, products.length]);
 
   const deleteHandler = (id) => {
     dispatch(deleteProduct(id));
   };
-
-  const createProductHandler = () => {};
 
   return (
     <>
@@ -38,9 +38,11 @@ const ProductListScreen = () => {
           <h1>Products</h1>
         </Col>
         <Col className="text-right">
-          <Button className="my-3" onClick={createProductHandler}>
-            <i className="fas fa-plus"></i> Create Product
-          </Button>
+          <LinkContainer to={`/admin/createProduct`}>
+            <Button className="my-3">
+              <i className="fas fa-plus"></i> Create Product
+            </Button>
+          </LinkContainer>
         </Col>
       </Row>
       {/* {loadingDelete && <Spinner />}

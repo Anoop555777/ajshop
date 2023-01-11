@@ -8,8 +8,11 @@ router
   .post(
     authController.protect,
     authController.restictTo("admin"),
+    productController.uploadProductPhoto,
+    productController.resizeProductPhoto,
     productController.createProduct
   );
+
 router
   .route("/:id")
   .get(productController.getProduct)
@@ -17,6 +20,11 @@ router
     authController.protect,
     authController.restictTo("admin"),
     productController.deleteProduct
+  )
+  .patch(
+    authController.protect,
+    authController.restictTo("admin"),
+    productController.updateProduct
   );
 
 router
