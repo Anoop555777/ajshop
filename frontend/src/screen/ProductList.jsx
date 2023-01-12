@@ -7,6 +7,8 @@ import Message from "../UI/Message";
 import { useNavigate } from "react-router-dom";
 import { fetchdata, deleteProduct } from "../store/productsActions";
 import { productListActions } from "../store/productListSlice";
+import { productEditActions } from "../store/productEditSlice";
+import { productCreateActions } from "../store/productCreateSlice";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
@@ -16,6 +18,11 @@ const ProductListScreen = () => {
   );
 
   const { user } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(productCreateActions.productCreateReset());
+    dispatch(productEditActions.productEditReset());
+  }, [dispatch]);
 
   useEffect(() => {
     if (!user || user.role !== "admin") {
@@ -28,7 +35,8 @@ const ProductListScreen = () => {
   }, [dispatch, navigate, successDelete, user, products.length]);
 
   const deleteHandler = (id) => {
-    dispatch(deleteProduct(id));
+    if (window.confirm("Are you sure you want to delete"))
+      dispatch(deleteProduct(id));
   };
 
   return (

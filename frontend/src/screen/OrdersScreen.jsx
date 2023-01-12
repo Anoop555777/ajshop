@@ -5,7 +5,8 @@ import { Link, useParams, useLocation } from "react-router-dom";
 import Message from "../UI/Message";
 import Spinner from "../UI/Spinner";
 import { getOrderToPaid, getOrder, getSession } from "./../store/orderAction";
-
+import { getOrderToDeliver } from "./../store/orderAction";
+import { orderDeliverAction } from "../store/orderDeliverSlice";
 const OrdersScreen = () => {
   const [sdkReady, setSDKReady] = useState(false);
   const location = useLocation();
@@ -15,14 +16,27 @@ const OrdersScreen = () => {
   const { id } = useParams();
   const queryParam = new URLSearchParams(location.search);
   const session = queryParam.get("session_id");
-  console.log(session);
+
   let error1;
 
   const { order, loading, error } = useSelector((state) => state.order);
   const { user } = useSelector((state) => state.user);
 
+  const {
+    loading: loadingDeliver,
+    error: errorDeliver,
+    deliverSuccess,
+  } = useSelector((state) => state.orderDeliver);
+
   error1 = error;
   error1 = error || user.error;
+
+  useEffect(() => {
+    if (deliverSuccess) {
+      dispatch(getOrder(id));
+      dispatch(orderDeliverAction.orderDeliverReset());
+    }
+  }, [deliverSuccess, dispatch]);
 
   useEffect(() => {
     if (session && !order.isPaid) {
@@ -31,7 +45,7 @@ const OrdersScreen = () => {
   }, [session, id, dispatch, order]);
 
   useEffect(() => {
-    if (!order._id) dispatch(getOrder(id));
+    if (!order._id || id !== order._id) dispatch(getOrder(id));
 
     if (!order.isPaid) {
       setSDKReady(true);
@@ -49,6 +63,9 @@ const OrdersScreen = () => {
     dispatch(getSession(id));
   };
 
+  const deliverHandler = () => {
+    dispatch(getOrderToDeliver(id));
+  };
   return loading ? (
     <Spinner />
   ) : error1 ? (
@@ -115,7 +132,7 @@ const OrdersScreen = () => {
                           />
                         </Col>
                         <Col>
-                          <Link to={`/product/${item.product}`}>
+                          <Link to={`/products/${item.product}`}>
                             {item.name}
                           </Link>
                         </Col>
@@ -175,6 +192,26 @@ const OrdersScreen = () => {
                     </Button>
                   )}
                 </ListGroup.Item>
+              )}
+              {loadingDeliver && <Spinner />}
+
+              {errorDeliver ? (
+                <Message variant="danger">{errorDeliver}</Message>
+              ) : (
+                user &&
+                user.role === "admin" &&
+                order.isPaid &&
+                !order.isDelivered && (
+                  <ListGroup.Item>
+                    <Button
+                      type="button"
+                      className="btn btn-block"
+                      onClick={deliverHandler}
+                    >
+                      Mark As Delivered
+                    </Button>
+                  </ListGroup.Item>
+                )
               )}
             </ListGroup>
           </Card>

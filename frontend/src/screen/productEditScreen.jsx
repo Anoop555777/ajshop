@@ -6,7 +6,7 @@ import Spinner from "./../UI/Spinner";
 import Message from "../UI/Message";
 import FormContainer from "./../component/FormContainer";
 import { fetchSpecificdata, productEdit } from "./../store/productsActions";
-import { productCreateActions } from "../store/productCreateSlice";
+import { productEditActions } from "../store/productEditSlice";
 
 const ProductEditScreen = () => {
   const { id } = useParams();
@@ -20,7 +20,7 @@ const ProductEditScreen = () => {
   const [description, setDescription] = useState("");
 
   const {
-    createSuccess,
+    editSuccess,
     loading,
     error: errorfail,
   } = useSelector((state) => state.productEdit);
@@ -42,11 +42,11 @@ const ProductEditScreen = () => {
   }, [user, navigate]);
 
   useEffect(() => {
-    if (createSuccess) {
-      dispatch(productCreateActions.productCreateReset());
+    if (editSuccess) {
+      dispatch(productEditActions.productEditReset());
       navigate("/admin/productlist");
     }
-  }, [createSuccess, navigate, dispatch]);
+  }, [editSuccess, navigate, dispatch]);
 
   const imageHandler = (e) => {
     setImage(e.target.files[0]);
@@ -59,7 +59,7 @@ const ProductEditScreen = () => {
       price.trim().length === 0 &&
       brand.trim().length === 0 &&
       category.trim().length === 0 &&
-      countInStock.trim.length === 0 &&
+      countInStock.trim().length === 0 &&
       description.trim().length === 0 &&
       image === null
     ) {

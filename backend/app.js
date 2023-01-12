@@ -3,6 +3,7 @@ const app = express();
 const productRouter = require("./routes/productRouter");
 const userRouter = require("./routes/userRouter");
 const orderRouter = require("./routes/orderRouter");
+const reviewRouter = require("./routes/reviewRouter");
 const globalErrorHandler = require("./controller/errorController");
 const cookieParser = require("cookie-parser");
 
@@ -13,6 +14,7 @@ app.use(express.json({ limit: "10kb" }));
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/orders", orderRouter);
+app.use("/api/v1/reviews", reviewRouter);
 
 app.use(globalErrorHandler);
 

@@ -85,7 +85,7 @@ export const productEdit = (data, id) => async (dispatch) => {
     await axios({
       method: "PATCH",
       url: `/api/v1/products/${id}`,
-      data,
+      data: data,
     });
 
     dispatch(productEditActions.productEditSuccess());

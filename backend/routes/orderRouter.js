@@ -4,7 +4,14 @@ const express = require("express");
 
 const router = express.Router();
 
-router.route("/").post(authController.protect, orderController.createOrder);
+router
+  .route("/")
+  .post(authController.protect, orderController.createOrder)
+  .get(
+    authController.protect,
+    authController.restictTo("admin"),
+    orderController.getAllOrders
+  );
 router
   .route("/myorders")
   .get(authController.protect, orderController.getAllOrderByUser);
@@ -18,6 +25,13 @@ router.get(
   "/checkout-session/:orderId",
   authController.protect,
   orderController.getCheckoutSession
+);
+
+router.patch(
+  "/:id/deliver",
+  authController.protect,
+  authController.restictTo("admin"),
+  orderController.orderToDeliver
 );
 
 module.exports = router;

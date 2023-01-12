@@ -1,5 +1,5 @@
 import { orderAction } from "./orderSlice";
-
+import { orderDeliverAction } from "./orderDeliverSlice";
 import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
 
@@ -60,6 +60,7 @@ export const getOrder = (id) => async (dispatch) => {
 
 export const getSession = (id) => async (dispatch) => {
   try {
+    dispatch(orderAction.orderRequest());
     const stripe = await stripePromise;
     const session = await axios.get(`/api/v1/orders/checkout-session/${id}`);
     await stripe.redirectToCheckout({
@@ -78,6 +79,7 @@ export const getSession = (id) => async (dispatch) => {
 
 export const getOrderToPaid = (session, id) => async (dispatch) => {
   try {
+    dispatch(orderAction.orderRequest());
     const { data } = await axios({
       method: "PATCH",
       url: `/api/v1/orders/${id}/paid?session_id=${session}`,
@@ -87,6 +89,26 @@ export const getOrderToPaid = (session, id) => async (dispatch) => {
   } catch (err) {
     dispatch(
       orderAction.orderFail(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      )
+    );
+  }
+};
+
+export const getOrderToDeliver = (id) => async (dispatch) => {
+  try {
+    dispatch(orderDeliverAction.orderDeliverRequest());
+    await axios({
+      method: "PATCH",
+      url: `/api/v1/orders/${id}/deliver`,
+    });
+
+    dispatch(orderDeliverAction.orderDeliverSuccess());
+  } catch (err) {
+    dispatch(
+      orderDeliverAction.orderDeliverFail(
         err.response && err.response.data.message
           ? err.response.data.message
           : err.message

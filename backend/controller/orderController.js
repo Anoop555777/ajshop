@@ -101,3 +101,28 @@ exports.getAllOrderByUser = catchAsync(async (req, res) => {
     .status(200)
     .json({ status: "success", result: order.length, data: { order } });
 });
+
+exports.getAllOrders = catchAsync(async (req, res) => {
+  const order = await Order.find().populate({ path: "user", select: "name" });
+
+  if (!order)
+    return next(new AppError(404, "sorry no order for this user Buy some!!!"));
+
+  res
+    .status(200)
+    .json({ status: "success", result: order.length, data: { order } });
+});
+
+exports.orderToDeliver = catchAsync(async (req, res) => {
+  const order = await Order.findById(req.params.id);
+
+  if (!order)
+    return next(new AppError(404, "sorry no order for this user Buy some!!!"));
+
+  order.isDelivered = true;
+  order.deliveredAt = Date.now();
+
+  await order.save();
+
+  res.status(200).json({ status: "success" });
+});

@@ -2,6 +2,11 @@ const express = require("express");
 const router = express.Router();
 const authController = require("./../controller/authController");
 const productController = require("../controller/productController");
+
+const reviewRouter = require("./../routes/reviewRouter");
+
+router.use("/:productId/review", reviewRouter);
+
 router
   .route("/")
   .get(productController.getAllProduct)
@@ -24,6 +29,8 @@ router
   .patch(
     authController.protect,
     authController.restictTo("admin"),
+    productController.uploadProductPhoto,
+    productController.resizeProductPhoto,
     productController.updateProduct
   );
 

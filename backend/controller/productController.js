@@ -98,7 +98,10 @@ exports.updateProductQty = catchAsync(async (req, res) => {
 });
 
 exports.updateProduct = catchAsync(async (req, res) => {
-  console.log(req.body);
+  if (req.file) req.body.image = `/images/${req.file.filename}`;
+  if (req.body.price) req.body.price = +req.body.price;
+  if (req.body.countInStock) req.body.countInStock = +req.body.countInStock;
+
   const product = await Product.findByIdAndUpdate(req.params.id, req.body);
 
   if (!product) {
