@@ -5,15 +5,18 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchdata } from "../store/productsActions";
 import Spinner from "./../UI/Spinner";
 import Message from "./../UI/Message";
+import { useParams } from "react-router-dom";
 
 const HomeProduct = () => {
   const dispatch = useDispatch();
   const product1 = useSelector((state) => state.productList);
   const { products, loading, error } = product1;
+  const { keyword } = useParams();
 
   useEffect(() => {
-    dispatch(fetchdata());
-  }, [dispatch]);
+    if (keyword) dispatch(fetchdata(keyword));
+    else dispatch(fetchdata());
+  }, [dispatch, keyword]);
 
   return (
     <>

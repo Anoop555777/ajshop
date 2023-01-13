@@ -16,3 +16,21 @@ exports.createReview = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+exports.getAllReviews = catchAsync(async (req, res, next) => {
+  let filter = {};
+
+  if (req.params.productId) filter = { product: req.params.productId };
+
+  const review = await Review.find(filter);
+
+  if (!review) next(new AppError(404, "sorry please try again"));
+
+  res.status(200).json({
+    status: "success",
+    result: review.length,
+    data: {
+      review,
+    },
+  });
+});

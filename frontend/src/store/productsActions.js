@@ -2,24 +2,27 @@ import { productListActions } from "./productListSlice";
 import { productActions } from "./productSlice";
 import { productCreateActions } from "./productCreateSlice";
 import { productEditActions } from "./productEditSlice";
+import { productReviewActions } from "./productReviewSlice";
 import axios from "axios";
 
-export const fetchdata = () => async (dispatch) => {
-  try {
-    dispatch(productListActions.productListRequest());
-    const { data } = await axios.get("/api/v1/products");
+export const fetchdata =
+  (keyword = "") =>
+  async (dispatch) => {
+    try {
+      dispatch(productListActions.productListRequest());
+      const { data } = await axios.get(`/api/v1/products?keyword=${keyword}`);
 
-    dispatch(productListActions.productListSuccess(data));
-  } catch (err) {
-    dispatch(
-      productListActions.productListFail(
-        err.response && err.response.data.message
-          ? err.response.data.message
-          : err.message
-      )
-    );
-  }
-};
+      dispatch(productListActions.productListSuccess(data));
+    } catch (err) {
+      dispatch(
+        productListActions.productListFail(
+          err.response && err.response.data.message
+            ? err.response.data.message
+            : err.message
+        )
+      );
+    }
+  };
 
 export const fetchSpecificdata = (id) => async (dispatch) => {
   try {
@@ -92,6 +95,27 @@ export const productEdit = (data, id) => async (dispatch) => {
   } catch (err) {
     dispatch(
       productEditActions.productEditFail(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      )
+    );
+  }
+};
+
+export const createProductReview = (data, id) => async (dispatch) => {
+  try {
+    dispatch(productReviewActions.productReviewRequest());
+    await axios({
+      method: "POST",
+      url: `/api/v1/products/${id}/reviews`,
+      data,
+    });
+
+    dispatch(productReviewActions.productReviewSuccess());
+  } catch (err) {
+    dispatch(
+      productReviewActions.productReviewFail(
         err.response && err.response.data.message
           ? err.response.data.message
           : err.message

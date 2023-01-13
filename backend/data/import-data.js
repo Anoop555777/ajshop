@@ -1,8 +1,9 @@
 const Product = require("./../model/productModel");
+const Review = require("./../model/reviewModel");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const product = require("./products");
-dotenv.config({ path: "./../../config.env" });
+dotenv.config({ path: "./config.env" });
 
 const DB = process.env.DATABASE.replace(
   "<password>",
@@ -28,6 +29,7 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await Product.deleteMany();
+    await Review.deleteMany();
     console.log("Data is deleted from DB successfully");
   } catch (err) {
     console.log(err);

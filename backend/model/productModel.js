@@ -34,6 +34,7 @@ const productSchema = mongoose.Schema(
       default: 0,
       max: 5,
       min: 0,
+      set: (val) => Math.round(val * 10) / 10,
     },
     numReviews: {
       type: Number,

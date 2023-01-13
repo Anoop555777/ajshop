@@ -9,6 +9,7 @@ router
     authController.protect,
     authController.restictTo("user"),
     reviewController.createReview
-  );
+  )
+  .get(authController.protect, reviewController.getAllReviews);
 
 module.exports = router;

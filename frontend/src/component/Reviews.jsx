@@ -67,7 +67,7 @@ const Reviews = ({ value, text, color }) => {
         </span>
       </span>
 
-      <span> by {text} users</span>
+      {text && <span> by {text} user</span>}
     </div>
   );
 };

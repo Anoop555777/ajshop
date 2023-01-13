@@ -5,7 +5,7 @@ const productController = require("../controller/productController");
 
 const reviewRouter = require("./../routes/reviewRouter");
 
-router.use("/:productId/review", reviewRouter);
+router.use("/:productId/reviews", reviewRouter);
 
 router
   .route("/")

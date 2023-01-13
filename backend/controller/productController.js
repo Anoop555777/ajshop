@@ -36,7 +36,11 @@ exports.resizeProductPhoto = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllProduct = catchAsync(async (req, res, next) => {
-  const products = await Product.find();
+  let filter = {};
+  if (req.query.keyword) {
+    filter.name = { $regex: req.query.keyword, $options: "i" };
+  }
+  const products = await Product.find(filter);
 
   if (!products) {
     return next(new AppError(404, "no products found "));
@@ -47,7 +51,7 @@ exports.getAllProduct = catchAsync(async (req, res, next) => {
 exports.getProduct = catchAsync(async (req, res, next) => {
   const id = req.params.id;
 
-  const product = await Product.findById(id);
+  const product = await Product.findById(id).populate("reviews");
 
   if (!product) {
     return next(new AppError(404, "no product found "));

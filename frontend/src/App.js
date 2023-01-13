@@ -34,6 +34,7 @@ function App() {
         <Container>
           <Routes>
             <Route path="/" element={<HomeScreen />} />
+            <Route path="/search/:keyword" element={<HomeScreen />} />
             <Route path="products/:id" element={<ProductScreen />} />
             <Route path="cart/:id" element={<CartScreen />} />
             <Route path="cart" element={<CartScreen />} />
@@ -44,11 +45,8 @@ function App() {
             <Route path="payment" element={<PaymentScreen />} />
             <Route path="placeOrder" element={<PlaceOrderScreen />} />
             <Route path="orders/:id" element={<OrderScreen />} />
-
             <Route path="admin/userlist" element={<UserListScreen />} />
-
             <Route path="admin/user/:id/edit" element={<UserEditScreen />} />
-
             <Route path="admin/productlist" element={<ProductListScreen />} />
             <Route
               path="admin/product/:id/edit"
