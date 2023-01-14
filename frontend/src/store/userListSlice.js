@@ -7,6 +7,7 @@ const userListSlice = createSlice({
     loading: false,
     error: false,
     successDelete: false,
+    pages: 0,
   },
   reducers: {
     userListRequest(state) {
@@ -14,7 +15,8 @@ const userListSlice = createSlice({
     },
     userListSuccess(state, action) {
       state.loading = false;
-      state.users = action.payload;
+      state.users = action.payload.data;
+      state.pages = action.payload.pages;
     },
     userListFailure(state, action) {
       state.loading = false;

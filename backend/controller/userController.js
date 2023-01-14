@@ -52,8 +52,27 @@ exports.userMe = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllUsers = catchAsync(async (req, res) => {
-  const users = await User.find().select("+role");
-  res.status(200).json({ status: "success", data: users });
+  let query = User.find().select("+role");
+  const page = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 8;
+  const skip = (page - 1) * limit;
+
+  query = query.skip(skip).limit(limit);
+  const noOfProduct = await User.countDocuments();
+  if (req.query.page) {
+    if (skip >= noOfProduct)
+      return next(new AppError(404, "This page does not exist."));
+  }
+
+  const users = await query;
+
+  if (users.length === 0) {
+    return next(new AppError(404, "no user found "));
+  }
+
+  res
+    .status(200)
+    .json({ status: "success", data: users, pages: noOfProduct / limit });
 });
 
 exports.deleteUser = catchAsync(async (req, res) => {

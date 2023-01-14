@@ -147,16 +147,16 @@ export const updateMyPassword =
     }
   };
 
-export const getAllUsers = () => async (dispatch) => {
+export const getAllUsers = (page) => async (dispatch) => {
   try {
     dispatch(userListAction.userListRequest());
 
     const { data } = await axios({
       method: "GET",
-      url: "/api/v1/users",
+      url: `/api/v1/users?page=${page}`,
     });
 
-    dispatch(userListAction.userListSuccess(data.data));
+    dispatch(userListAction.userListSuccess(data));
   } catch (err) {
     console.log(err.message);
     dispatch(

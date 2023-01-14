@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { orderAction } from "../store/orderSlice";
+import Meta from "./../component/Meta";
 
 import {
   Row,
@@ -58,6 +59,7 @@ const CartScreen = () => {
 
   return (
     <>
+      <Meta title="cart" />
       <h1>Shopping Cart</h1>
       {cartItem.length === 0 ? (
         <Message>

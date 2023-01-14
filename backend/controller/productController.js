@@ -40,12 +40,27 @@ exports.getAllProduct = catchAsync(async (req, res, next) => {
   if (req.query.keyword) {
     filter.name = { $regex: req.query.keyword, $options: "i" };
   }
-  const products = await Product.find(filter);
+  let query = Product.find(filter);
 
-  if (!products) {
+  const page = req.query.page * 1 || 1;
+  const limit = req.query.limit * 1 || 8;
+  const skip = (page - 1) * limit;
+
+  query = query.skip(skip).limit(limit);
+  const noOfProduct = await Product.countDocuments();
+  if (req.query.page) {
+    if (skip >= noOfProduct)
+      return next(new AppError(404, "This page does not exist."));
+  }
+
+  const products = await query;
+
+  if (products.length === 0) {
     return next(new AppError(404, "no products found "));
   }
-  res.status(200).json({ status: "success", products });
+  res
+    .status(200)
+    .json({ status: "success", products, pages: noOfProduct / limit });
 });
 
 exports.getProduct = catchAsync(async (req, res, next) => {
@@ -113,4 +128,12 @@ exports.updateProduct = catchAsync(async (req, res) => {
   }
 
   res.status(200).json({ status: "success" });
+});
+
+exports.topRatedProduct = catchAsync(async (req, res) => {
+  const products = await Product.find().sort({ rating: -1 }).limit(5);
+  if (products.length === 0)
+    return next(new AppError(404, "Products not found"));
+
+  res.status(200).json({ status: "success", products });
 });

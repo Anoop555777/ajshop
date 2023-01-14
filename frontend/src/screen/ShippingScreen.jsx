@@ -6,7 +6,7 @@ import Message from "./../UI/Message";
 import Spinner from "./../UI/Spinner";
 import CheckoutSteps from "./../component/CheckoutSteps";
 import FormContainer from "./../component/FormContainer";
-
+import Meta from "./../component/Meta";
 const ShippingScreen = () => {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
@@ -62,6 +62,7 @@ const ShippingScreen = () => {
 
   return (
     <>
+      <Meta title="shipping" />
       {user.name ? (
         <Row>
           <Col>

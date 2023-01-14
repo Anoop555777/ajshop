@@ -4,20 +4,30 @@ import { Table, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "./../UI/Spinner";
 import Message from "../UI/Message";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { fetchdata, deleteProduct } from "../store/productsActions";
 import { productListActions } from "../store/productListSlice";
 import { productEditActions } from "../store/productEditSlice";
 import { productCreateActions } from "../store/productCreateSlice";
+import Paginate from "../component/Pagination";
 
 const ProductListScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { products, loading, error, successDelete } = useSelector(
+  const { products, loading, error, successDelete, pages } = useSelector(
     (state) => state.productList
   );
 
   const { user } = useSelector((state) => state.user);
+
+  const location = useLocation();
+  const queryParam = new URLSearchParams(location.search);
+
+  const page = queryParam.get("page") || 1;
+
+  useEffect(() => {
+    dispatch(fetchdata("", page));
+  }, [dispatch, page, products.length]);
 
   useEffect(() => {
     dispatch(productCreateActions.productCreateReset());
@@ -102,6 +112,7 @@ const ProductListScreen = () => {
           </Table>
         </>
       )}
+      <Paginate pages={pages} page={page} />
     </>
   );
 };

@@ -3,14 +3,17 @@ import { productActions } from "./productSlice";
 import { productCreateActions } from "./productCreateSlice";
 import { productEditActions } from "./productEditSlice";
 import { productReviewActions } from "./productReviewSlice";
+import { productTopReatedActions } from "./productTopReated";
 import axios from "axios";
 
 export const fetchdata =
-  (keyword = "") =>
+  (keyword = "", page) =>
   async (dispatch) => {
     try {
       dispatch(productListActions.productListRequest());
-      const { data } = await axios.get(`/api/v1/products?keyword=${keyword}`);
+      const { data } = await axios.get(
+        `/api/v1/products?keyword=${keyword}&page=${page}`
+      );
 
       dispatch(productListActions.productListSuccess(data));
     } catch (err) {
@@ -116,6 +119,23 @@ export const createProductReview = (data, id) => async (dispatch) => {
   } catch (err) {
     dispatch(
       productReviewActions.productReviewFail(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      )
+    );
+  }
+};
+
+export const listTopProducts = () => async (dispatch) => {
+  try {
+    dispatch(productTopReatedActions.productTopReatedRequest());
+    const { data } = await axios.get(`/api/v1/products/toprated`);
+
+    dispatch(productTopReatedActions.productTopReatedSuccess(data));
+  } catch (err) {
+    dispatch(
+      productTopReatedActions.productTopReatedFail(
         err.response && err.response.data.message
           ? err.response.data.message
           : err.message

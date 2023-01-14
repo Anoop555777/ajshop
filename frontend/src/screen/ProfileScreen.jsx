@@ -9,7 +9,7 @@ import { userActions } from "./../store/userSlice";
 import { updateMe, updateMyPassword } from "./../store/userAction";
 import { getAllOrder } from "../store/orderListAction";
 import FormContainer from "./../component/FormContainer";
-
+import Meta from "./../component/Meta";
 const ProfileScreen = () => {
   const dispatch = useDispatch();
 
@@ -99,6 +99,7 @@ const ProfileScreen = () => {
   };
   return (
     <>
+      <Meta title="Myself" />
       {user.name ? (
         <Row>
           <Col md={5}>

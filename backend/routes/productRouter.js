@@ -7,6 +7,8 @@ const reviewRouter = require("./../routes/reviewRouter");
 
 router.use("/:productId/reviews", reviewRouter);
 
+router.get("/toprated", productController.topRatedProduct);
+
 router
   .route("/")
   .get(productController.getAllProduct)

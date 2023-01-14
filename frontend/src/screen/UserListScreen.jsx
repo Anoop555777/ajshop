@@ -5,17 +5,23 @@ import { useDispatch, useSelector } from "react-redux";
 import Message from "./../UI/Message";
 import Spinner from "./../UI/Spinner";
 import { getAllUsers, deleteUser } from "../store/userAction";
-
+import { useLocation } from "react-router-dom";
+import Paginate from "../component/Pagination";
 const UserListScreen = () => {
   const dispatch = useDispatch();
 
-  const { loading, error, users, successDelete } = useSelector(
+  const { loading, error, users, successDelete, pages } = useSelector(
     (state) => state.userList
   );
 
+  const location = useLocation();
+  const queryParam = new URLSearchParams(location.search);
+
+  const page = queryParam.get("page") || 1;
+
   useEffect(() => {
-    dispatch(getAllUsers());
-  }, [dispatch, successDelete]);
+    dispatch(getAllUsers(page));
+  }, [dispatch, successDelete, page]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure you want to delete"))
@@ -74,6 +80,7 @@ const UserListScreen = () => {
           </tbody>
         </Table>
       )}
+      <Paginate pages={pages} page={page} />
     </>
   );
 };

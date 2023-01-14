@@ -16,6 +16,7 @@ import Message from "../UI/Message";
 import { createProductReview } from "./../store/productsActions";
 import { productReviewActions } from "../store/productReviewSlice";
 import Reviews from "./../component/Reviews";
+import Meta from "./../component/Meta";
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
 
@@ -42,7 +43,6 @@ const ProductScreen = () => {
 
   useEffect(() => {
     if (successProductReview) {
-    
       setTimeout(() => {
         dispatch(fetchSpecificdata(id));
       }, 1000);
@@ -74,6 +74,7 @@ const ProductScreen = () => {
         <Message varient="danger">{error}</Message>
       ) : (
         <>
+          <Meta title={product.name}></Meta>
           <Row>
             <Col md={6}>
               <Image src={product.image} alt={product.name} fluid />
