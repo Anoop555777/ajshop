@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./../store/userAction";
 import { useNavigate } from "react-router-dom";
 import SearchBox from "./SearchBox";
+
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

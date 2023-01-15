@@ -15,6 +15,7 @@ const userDetailSlice = createSlice({
     userDetailSuccess(state, action) {
       state.loading = false;
       state.user = action.payload;
+      state.error = false;
     },
     userDetailFailure(state, action) {
       state.loading = false;
@@ -28,6 +29,7 @@ const userDetailSlice = createSlice({
     userDetailUpdate(state) {
       state.successUpdate = true;
       state.loading = false;
+      state.error = false;
     },
     userDetailUpdateReset(state) {
       state.successUpdate = false;

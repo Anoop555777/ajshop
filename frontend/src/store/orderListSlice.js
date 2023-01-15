@@ -11,6 +11,7 @@ const orderList = createSlice({
     orderSuccess(state, action) {
       state.state.loading = false;
       state.state.orders = action.payload.order;
+      state.state.error = false;
     },
     orderFail(state, action) {
       state.state.loading = false;

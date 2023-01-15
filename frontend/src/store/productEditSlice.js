@@ -10,6 +10,7 @@ const productEditSlice = createSlice({
     productEditSuccess(state) {
       state.loading = false;
       state.editSuccess = true;
+      state.error = false;
     },
     productEditFail(state, action) {
       state.loading = false;

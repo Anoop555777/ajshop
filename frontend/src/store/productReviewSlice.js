@@ -10,6 +10,7 @@ const productReviewSlice = createSlice({
     productReviewSuccess(state) {
       state.loading = false;
       state.successProductReview = true;
+      state.error = false;
     },
     productReviewFail(state, action) {
       state.loading = false;

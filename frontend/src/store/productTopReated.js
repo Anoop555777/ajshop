@@ -14,6 +14,7 @@ const productTopReated = createSlice({
     productTopReatedSuccess(state, action) {
       state.loading = false;
       state.products = action.payload.products;
+      state.error=false;
     },
     productTopReatedFail(state, action) {
       state.loading = false;

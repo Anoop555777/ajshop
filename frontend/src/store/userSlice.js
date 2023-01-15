@@ -31,7 +31,7 @@ const userSlice = createSlice({
       state.user.name = action.payload.user.name;
       state.user.email = action.payload.user.email;
       state.user.role = action.payload.user.role;
-      state.error = null;
+      state.error = false;
     },
     userLoginFailure(state, action) {
       state.loading = false;
@@ -49,7 +49,7 @@ const userSlice = createSlice({
       state.user.name = action.payload.user.name;
       state.user.email = action.payload.user.email;
       state.user.role = action.payload.user.role;
-      state.error = null;
+      state.error = false;
     },
     isLoggedIn(state, action) {
       state.user.name = action.payload.user.name;

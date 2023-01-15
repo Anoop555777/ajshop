@@ -40,7 +40,7 @@ const userSchema = mongoose.Schema({
     select: false,
   },
   passwordResetToken: String,
-  passwordExprireToken: Date,
+  passwordExpireToken: Date,
 });
 
 userSchema.pre("save", async function (next) {

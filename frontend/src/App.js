@@ -22,6 +22,8 @@ import ProductListScreen from "./screen/ProductList";
 import CreateProductScreen from "./screen/CreateProductScreen";
 import ProductEditScreen from "./screen/productEditScreen";
 import OrderListScreen from "./screen/orderListScreen";
+import ForgetPasswordScreen from "./screen/ForgetPasswordScreen";
+import ResetPasswordScreen from "./screen/ResetPassword";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -58,6 +60,10 @@ function App() {
             />
 
             <Route path="admin/orderlist" element={<OrderListScreen />} />
+
+            <Route path="forgetpassword" element={<ForgetPasswordScreen />} />
+
+            <Route path="resetpassword" element={<ResetPasswordScreen />} />
           </Routes>
         </Container>
       </main>

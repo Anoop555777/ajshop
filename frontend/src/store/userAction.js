@@ -5,6 +5,7 @@ import { orderAction } from "./orderSlice";
 import { cartActions } from "./cartSlice";
 import { userListAction } from "./userListSlice";
 import { userDetailAction } from "./userDetailSlice";
+import { UserForgetAction } from "./userForgetSlice";
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -70,10 +71,9 @@ export const isLoggedIn = () => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   try {
     const { data } = await axios({
+      method: "GET",
       url: "/api/v1/users/logout",
     });
-
-    console.log(data);
 
     dispatch(userActions.userLogoutSuccess(data));
     if (localStorage.getItem("cart")) localStorage.removeItem("cart");
@@ -233,3 +233,53 @@ export const getUser = (id) => async (dispatch) => {
     );
   }
 };
+
+export const forgetPassword = (email) => async (dispatch) => {
+  try {
+    dispatch(UserForgetAction.UserForgetRequest());
+
+    await axios({
+      method: "POST",
+      url: "/api/v1/users/forgetpassword",
+      data: {
+        email,
+      },
+    });
+
+    dispatch(UserForgetAction.UserForgetSuccess());
+  } catch (err) {
+    dispatch(
+      UserForgetAction.UserForgetFail(
+        err.response && err.response.data.message
+          ? err.response.data.message
+          : err.message
+      )
+    );
+  }
+};
+
+export const resetPassword =
+  (password, passwordConfirm, token) => async (dispatch) => {
+    try {
+      dispatch(userActions.userLoginRequest());
+
+      const { data } = await axios({
+        method: "PATCH",
+        url: `/api/v1/users/resetpassword/${token}`,
+        data: {
+          passwordConfirm,
+          password,
+        },
+      });
+
+      dispatch(userActions.userLoginSuccess(data));
+    } catch (err) {
+      dispatch(
+        userActions.userLoginFailure(
+          err.response && err.response.data.message
+            ? err.response.data.message
+            : err.message
+        )
+      );
+    }
+  };

@@ -17,6 +17,7 @@ const userListSlice = createSlice({
       state.loading = false;
       state.users = action.payload.data;
       state.pages = action.payload.pages;
+      state.error = false;
     },
     userListFailure(state, action) {
       state.loading = false;

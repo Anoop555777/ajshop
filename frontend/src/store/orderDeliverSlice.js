@@ -13,6 +13,7 @@ const orderDeliverSlice = createSlice({
     orderDeliverSuccess(state) {
       state.loading = false;
       state.deliverSuccess = true;
+      state.error = false;
     },
     orderDeliverFail(state, action) {
       state.loading = false;

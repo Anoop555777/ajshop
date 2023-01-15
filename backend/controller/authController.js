@@ -3,6 +3,8 @@ const catchAsync = require("./../utils/catchAsyn");
 const AppError = require("./../utils/appError");
 const jwt = require("jsonwebtoken");
 const util = require("util");
+const Email = require("./../utils/email");
+const crypto = require("crypto");
 
 const tokenGenerater = function (id) {
   console.log(id);
@@ -153,10 +155,34 @@ exports.restictTo = (...roles) => {
 exports.forgetPassword = catchAsync(async (req, res, next) => {
   //find the user with the help of email
   const user = await User.findOne({ email: req.body.email });
+
   if (!user) return next(new AppError(400, "no email found "));
 
   // generate a ramdon route token
   const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+
+  //send it to user's email
+
+  const resetURL = `${req.protocol}://127.0.0.1:3000/resetpassword?reset_token=${resetToken}`;
+
+  try {
+    await new Email(user, resetURL).sendPasswordReset();
+
+    res.status(200).json({
+      status: "success",
+      message: "Token sent to email!",
+    });
+  } catch (err) {
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    return next(
+      new AppError("There was an error sending the email. Try again later!"),
+      500
+    );
+  }
 });
 
 exports.logout = (req, res, next) => {
@@ -185,4 +211,29 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   const userUpdateInfo = await User.findById(user._id);
 
   sendToken(userUpdateInfo, 200, res);
+});
+
+exports.resetPassword = catchAsync(async (req, res, next) => {
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordExpireToken: { $gt: Date.now() }, //checked if token is expired or not
+  });
+
+  if (!user) {
+    return next(new AppError("Token in invlid or expired", 400));
+  }
+
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordResetToken = undefined;
+  user.passwordExpireToken = undefined;
+  await user.save();
+  //update change passwordAt property
+
+  //log the user in
+  sendToken(user, 200, res);
 });

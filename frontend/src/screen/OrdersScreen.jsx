@@ -36,7 +36,7 @@ const OrdersScreen = () => {
       dispatch(getOrder(id));
       dispatch(orderDeliverAction.orderDeliverReset());
     }
-  }, [deliverSuccess, dispatch]);
+  }, [deliverSuccess, dispatch, id]);
 
   useEffect(() => {
     if (session && !order.isPaid) {

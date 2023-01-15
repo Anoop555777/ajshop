@@ -40,6 +40,9 @@ const handleJWTError = () =>
 const handleTokenExpired = () =>
   new AppError(401, "you token have been exprired");
 
+const handleTokenExpiredError = () =>
+  new AppError(401, "Token Expired please login again");
+
 module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";

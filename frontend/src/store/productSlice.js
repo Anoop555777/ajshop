@@ -10,6 +10,7 @@ const productSlice = createSlice({
     productListSuccess(state, action) {
       state.loading = false;
       state.product = action.payload.product;
+      state.error = false;
     },
     productListFail(state, action) {
       state.loading = false;
