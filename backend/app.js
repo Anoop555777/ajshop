@@ -13,6 +13,7 @@ dotenv.config({ path: `${path.resolve()}/config.env` });
 //body parser middleware
 app.use(cookieParser());
 app.use(express.json({ limit: "10kb" }));
+app.use(express.static(`${__dirname}/frontend`));
 
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/users", userRouter);
