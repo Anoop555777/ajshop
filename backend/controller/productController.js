@@ -25,12 +25,16 @@ exports.resizeProductPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
 
   req.file.filename = `photo-${req.user._id}-${Date.now()}.jpeg`;
-
+try{
   await sharp(req.file.buffer)
     .resize(2000, 1333)
     .toFormat("jpeg")
-    .jpeg({ quality: 90 }).toFile(`
-    ../frontend/build/images/${req.file.filename}`);
+    .jpeg({ quality: 90 })
+    .toFile(`frontend/build/images/${req.file.filename}`);
+}
+catch(err){
+  console.log(err)
+}
 
   next();
 });
