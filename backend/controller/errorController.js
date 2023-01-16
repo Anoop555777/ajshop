@@ -11,7 +11,7 @@ const sendErrorProv = (res, err) => {
       .json({ status: err.status, message: err.message });
   else {
     console.log("ERROR 💥", err);
-    res.status(500).json({ status: "error", message: err });
+    res.status(500).json({ status: "error", message: "something went wrong" });
   }
 };
 
