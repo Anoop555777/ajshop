@@ -1,7 +1,8 @@
 const mongoose = require("mongoose");
+const path = require("path");
 const dotenv = require("dotenv");
 const app = require("./app");
-dotenv.config({ path: `${__dirname}/../config.env` });
+dotenv.config({ path: `${path.resolve()}/config.env` });
 const DB = process.env.DATABASE.replace(
   "<password>",
   process.env.DATABASE_PASSWORD

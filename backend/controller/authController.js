@@ -7,7 +7,6 @@ const Email = require("./../utils/email");
 const crypto = require("crypto");
 
 const tokenGenerater = function (id) {
-  console.log(id);
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE,
   });
