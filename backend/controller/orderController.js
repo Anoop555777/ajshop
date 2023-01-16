@@ -51,6 +51,7 @@ exports.updateOrderToPaid = catchAsync(async (req, res, next) => {
 exports.getCheckoutSession = catchAsync(async (req, res) => {
   //1) get the order details
   const order = await Order.findById(req.params.orderId);
+
   const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
   const listItem = order.orderItems.map((el) => {
     return {
@@ -66,7 +67,7 @@ exports.getCheckoutSession = catchAsync(async (req, res) => {
         product_data: {
           description: el.name,
           name: el.name,
-          images: [`${req.protocol}://${req.get("host")}${el.image}`],
+          images: [`https://ajshop.cyclic.app${el.image}`],
         },
       },
     };
