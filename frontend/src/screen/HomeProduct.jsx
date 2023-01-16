@@ -9,7 +9,6 @@ import { useLocation, Link } from "react-router-dom";
 import Paginate from "../component/Pagination";
 import ProductCarousel from "../component/ProductCarousel";
 import Meta from "./../component/Meta";
-import { isLoggedIn } from "./../store/userAction";
 
 const HomeProduct = () => {
   const dispatch = useDispatch();
@@ -19,10 +18,6 @@ const HomeProduct = () => {
   const queryParam = new URLSearchParams(location.search);
   const search = queryParam.get("search");
   const page = queryParam.get("page") || 1;
-
-  useEffect(() => {
-    dispatch(isLoggedIn());
-  }, [dispatch]);
 
   useEffect(() => {
     if (search) dispatch(fetchdata(search, page));
