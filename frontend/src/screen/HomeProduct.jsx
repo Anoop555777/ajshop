@@ -51,7 +51,9 @@ const HomeProduct = () => {
           ))}
         </Row>
       )}
-      <Paginate pages={pages} page={page} keyword={search ? search : ""} />
+      {products.length > 8 && (
+        <Paginate pages={pages} page={page} keyword={search ? search : ""} />
+      )}
     </>
   );
 };
