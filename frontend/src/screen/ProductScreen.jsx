@@ -89,7 +89,7 @@ const ProductScreen = () => {
                 </ListGroup.Item>
                 <ListGroup.Item>Price : ₹{product.price}</ListGroup.Item>
                 <ListGroup.Item>
-                  Discription : {product.description}
+                  Description : {product.description}
                 </ListGroup.Item>
               </ListGroup>
             </Col>
@@ -147,7 +147,7 @@ const ProductScreen = () => {
                       disabled={product.countInStock === 0}
                       onClick={submitHandler}
                     >
-                      Add To Card
+                      Add To Cart
                     </Button>
                   </ListGroup.Item>
                 </ListGroup>

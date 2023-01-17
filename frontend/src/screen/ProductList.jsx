@@ -26,10 +26,6 @@ const ProductListScreen = () => {
   const page = queryParam.get("page") || 1;
 
   useEffect(() => {
-    dispatch(fetchdata("", page));
-  }, [dispatch, page, products.length]);
-
-  useEffect(() => {
     dispatch(productCreateActions.productCreateReset());
     dispatch(productEditActions.productEditReset());
   }, [dispatch]);
@@ -38,11 +34,11 @@ const ProductListScreen = () => {
     if (!user || user.role !== "admin") {
       navigate("/signin");
     }
-    dispatch(fetchdata());
+    dispatch(fetchdata("", page));
     if (successDelete) {
-      dispatch(productListActions.productListDelete());
+      dispatch(productListActions.productListDeleteReset());
     }
-  }, [dispatch, navigate, successDelete, user, products.length]);
+  }, [dispatch, navigate, successDelete, user, products.length, page]);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure you want to delete"))

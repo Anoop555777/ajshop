@@ -1,4 +1,5 @@
 const Product = require("./../model/productModel");
+const path = require("path");
 const catchAsync = require("./../utils/catchAsyn");
 const AppError = require("./../utils/appError");
 const multer = require("multer");
@@ -25,16 +26,14 @@ exports.resizeProductPhoto = catchAsync(async (req, res, next) => {
   if (!req.file) return next();
 
   req.file.filename = `photo-${req.user._id}-${Date.now()}.jpeg`;
-try{
+
   await sharp(req.file.buffer)
     .resize(2000, 1333)
     .toFormat("jpeg")
     .jpeg({ quality: 90 })
-    .toFile(`frontend/build/images/${req.file.filename}`);
-}
-catch(err){
-  console.log(err)
-}
+    .toFile(
+      path.join(path.resolve(), `frontend/build/images/${req.file.filename}`)
+    );
 
   next();
 });
@@ -62,9 +61,11 @@ exports.getAllProduct = catchAsync(async (req, res, next) => {
   if (products.length === 0) {
     return next(new AppError(404, "no products found "));
   }
-  res
-    .status(200)
-    .json({ status: "success", products, pages: noOfProduct / limit });
+  res.status(200).json({
+    status: "success",
+    products,
+    pages: Math.ceil(noOfProduct / limit),
+  });
 });
 
 exports.getProduct = catchAsync(async (req, res, next) => {

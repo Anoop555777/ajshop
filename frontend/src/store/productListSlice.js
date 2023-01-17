@@ -24,7 +24,11 @@ const productListSlice = createSlice({
       state.error = action.payload;
     },
     productListDelete(state) {
-      state.successDelete = !state.successDelete;
+      state.successDelete = true;
+    },
+    productListDeleteReset(state) {
+      state.successDelete = false;
+      state.loading = false;
     },
   },
 });
