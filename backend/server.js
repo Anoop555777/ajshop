@@ -7,8 +7,6 @@ const DB = process.env.DATABASE.replace(
   "<password>",
   process.env.DATABASE_PASSWORD
 );
-let server;
-const port = process.env.PORT || 8000;
 
 mongoose
   .connect(DB, {
@@ -19,12 +17,13 @@ mongoose
   })
   .then(() => {
     console.log("Connect to database successfull");
-  })
-  .then(
-    (server = app.listen(port, () => {
-      console.log(`application is running in port ${port}`);
-    }))
-  );
+  });
+
+const port = process.env.PORT || 8000;
+
+const server = app.listen(port, () => {
+  console.log("application is running in port 8000");
+});
 
 process.on("unhandledRejection", (err) => {
   console.log(err);
