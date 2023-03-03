@@ -9,7 +9,6 @@ import axios from "axios";
 export const fetchdata =
   (keyword = "", page) =>
   async (dispatch) => {
-    console.log(page);
     try {
       dispatch(productListActions.productListRequest());
       const { data } = await axios.get(
