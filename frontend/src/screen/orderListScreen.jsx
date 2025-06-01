@@ -3,10 +3,10 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import Message from "./../UI/Message";
-import Spinner from "./../UI/Spinner";
+import Message from "../UI/Message";
+import Spinner from "../UI/Spinner";
 import { getAllOrders } from "../store/orderListAction";
-import Meta from "./../component/Meta";
+import Meta from "../component/Meta";
 const OrderListScreen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

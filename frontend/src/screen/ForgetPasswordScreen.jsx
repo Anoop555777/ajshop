@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import Message from "./../UI/Message";
-import Spinner from "./../UI/Spinner";
-import { forgetPassword } from "./../store/userAction";
+import Message from "../UI/Message";
+import Spinner from "../UI/Spinner";
+import { forgetPassword } from "../store/userAction";
 import FormContainer from "../component/FormContainer";
-import Meta from "./../component/Meta";
+import Meta from "../component/Meta";
 
 const ForgetPasswordScreen = () => {
   const [email, setEmail] = useState("");

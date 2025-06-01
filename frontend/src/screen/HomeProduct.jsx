@@ -3,12 +3,12 @@ import { Row, Col } from "react-bootstrap";
 import Product from "../component/Product";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchdata } from "../store/productsActions";
-import Spinner from "./../UI/Spinner";
-import Message from "./../UI/Message";
+import Spinner from "../UI/Spinner";
+import Message from "../UI/Message";
 import { useLocation, Link } from "react-router-dom";
 import Paginate from "../component/Pagination";
 import ProductCarousel from "../component/ProductCarousel";
-import Meta from "./../component/Meta";
+import Meta from "../component/Meta";
 
 const HomeProduct = () => {
   const dispatch = useDispatch();

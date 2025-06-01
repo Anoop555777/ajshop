@@ -4,10 +4,13 @@ const dotenv = require("dotenv");
 const app = require("./app");
 
 dotenv.config({ path: `${path.resolve()}/config.env` });
+
 const DB = process.env.DATABASE.replace(
-  "<password>",
+  "<PASSWORD>",
   process.env.DATABASE_PASSWORD
 );
+
+console.log(DB);
 
 const connectDB = async () => {
   try {
@@ -29,7 +32,7 @@ const port = process.env.PORT || 8000;
 
 connectDB().then(() => {
   app.listen(port, () => {
-    console.log("application is running in port 8000");
+    console.log(`application is running in port ${port}`);
   });
 });
 

@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Row, Col, Button, Form } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import Message from "./../UI/Message";
-import Spinner from "./../UI/Spinner";
-import { login } from "./../store/userAction";
+import Message from "../UI/Message";
+import Spinner from "../UI/Spinner";
+import { login } from "../store/userAction";
 import FormContainer from "../component/FormContainer";
-import Meta from "./../component/Meta";
+import Meta from "../component/Meta";
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

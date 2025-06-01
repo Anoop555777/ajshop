@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Col, Row, Button, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import Message from "./../UI/Message";
-import Spinner from "./../UI/Spinner";
-import CheckoutSteps from "./../component/CheckoutSteps";
-import FormContainer from "./../component/FormContainer";
-import Meta from "./../component/Meta";
+import Message from "../UI/Message";
+import Spinner from "../UI/Spinner";
+import CheckoutSteps from "../component/CheckoutSteps";
+import FormContainer from "../component/FormContainer";
+import Meta from "../component/Meta";
 const ShippingScreen = () => {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");

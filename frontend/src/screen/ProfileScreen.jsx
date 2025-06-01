@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { Col, Row, Button, Form, Table } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import Message from "./../UI/Message";
-import Spinner from "./../UI/Spinner";
-import { userActions } from "./../store/userSlice";
-import { updateMe, updateMyPassword } from "./../store/userAction";
+import Message from "../UI/Message";
+import Spinner from "../UI/Spinner";
+import { userActions } from "../store/userSlice";
+import { updateMe, updateMyPassword } from "../store/userAction";
 import { getAllOrder } from "../store/orderListAction";
-import FormContainer from "./../component/FormContainer";
-import Meta from "./../component/Meta";
+import FormContainer from "../component/FormContainer";
+import Meta from "../component/Meta";
 const ProfileScreen = () => {
   const dispatch = useDispatch();
 

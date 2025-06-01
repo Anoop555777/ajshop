@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
-import Spinner from "./../UI/Spinner";
+import Spinner from "../UI/Spinner";
 import Message from "../UI/Message";
-import FormContainer from "./../component/FormContainer";
+import FormContainer from "../component/FormContainer";
 import { useSelector, useDispatch } from "react-redux";
-import { getUser, updateUserToAdmin } from "./../store/userAction";
+import { getUser, updateUserToAdmin } from "../store/userAction";
 import { userDetailAction } from "../store/userDetailSlice";
 
 const UserEditScreen = () => {

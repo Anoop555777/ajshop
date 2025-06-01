@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Container } from "react-bootstrap";
-import Meta from "./../component/Meta";
+import Meta from "../component/Meta";
 const NotFound = () => {
   return (
     <>

@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Carousel, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import Spinner from "./../UI/Spinner";
-import Message from "./../UI/Message";
+import Spinner from "../UI/Spinner";
+import Message from "../UI/Message";
 import "./carousel.css";
-import { listTopProducts } from "./../store/productsActions";
+import { listTopProducts } from "../store/productsActions";
 
 const ProductCarousel = () => {
   const dispatch = useDispatch();

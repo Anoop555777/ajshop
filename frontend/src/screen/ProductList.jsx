@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import Spinner from "./../UI/Spinner";
+import Spinner from "../UI/Spinner";
 import Message from "../UI/Message";
 import { useNavigate, useLocation } from "react-router-dom";
 import { fetchdata, deleteProduct } from "../store/productsActions";

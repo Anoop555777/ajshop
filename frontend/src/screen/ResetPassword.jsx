@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import Message from "./../UI/Message";
-import Spinner from "./../UI/Spinner";
-import { resetPassword } from "./../store/userAction";
+import Message from "../UI/Message";
+import Spinner from "../UI/Spinner";
+import { resetPassword } from "../store/userAction";
 import FormContainer from "../component/FormContainer";
-import Meta from "./../component/Meta";
+import Meta from "../component/Meta";
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");

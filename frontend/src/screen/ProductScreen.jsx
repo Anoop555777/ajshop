@@ -11,12 +11,12 @@ import {
 } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchSpecificdata } from "../store/productsActions";
-import Spinner from "./../UI/Spinner";
+import Spinner from "../UI/Spinner";
 import Message from "../UI/Message";
-import { createProductReview } from "./../store/productsActions";
+import { createProductReview } from "../store/productsActions";
 import { productReviewActions } from "../store/productReviewSlice";
-import Reviews from "./../component/Reviews";
-import Meta from "./../component/Meta";
+import Reviews from "../component/Reviews";
+import Meta from "../component/Meta";
 const ProductScreen = () => {
   const [qty, setQty] = useState(1);
 

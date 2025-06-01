@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import "./App.css";
 import { Container } from "react-bootstrap";
-import Header from "./../src/component/header";
-import Footer from "./../src/component/footer";
+import Header from "./component/header";
+import Footer from "./component/footer";
 import HomeScreen from "./screen/HomeProduct";
 import ProductScreen from "./screen/ProductScreen";
 import { Routes, Route } from "react-router-dom";
@@ -30,6 +30,7 @@ function App() {
   useEffect(() => {
     dispatch(isLoggedIn());
   }, [dispatch]);
+
   return (
     <>
       <Header />

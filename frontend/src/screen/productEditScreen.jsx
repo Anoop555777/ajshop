@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-import Spinner from "./../UI/Spinner";
+import Spinner from "../UI/Spinner";
 import Message from "../UI/Message";
-import FormContainer from "./../component/FormContainer";
-import { fetchSpecificdata, productEdit } from "./../store/productsActions";
+import FormContainer from "../component/FormContainer";
+import { fetchSpecificdata, productEdit } from "../store/productsActions";
 import { productEditActions } from "../store/productEditSlice";
 
 const ProductEditScreen = () => {

@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Col, Button, Form } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import Message from "./../UI/Message";
-import Spinner from "./../UI/Spinner";
-import CheckoutSteps from "./../component/CheckoutSteps";
-import FormContainer from "./../component/FormContainer";
+import Message from "../UI/Message";
+import Spinner from "../UI/Spinner";
+import CheckoutSteps from "../component/CheckoutSteps";
+import FormContainer from "../component/FormContainer";
 
 const PaymentScreen = () => {
   const navigate = useNavigate();

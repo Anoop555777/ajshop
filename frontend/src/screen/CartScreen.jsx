@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Link, useLocation, useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { orderAction } from "../store/orderSlice";
-import Meta from "./../component/Meta";
+import Meta from "../component/Meta";
 
 import {
   Row,
@@ -14,8 +14,8 @@ import {
   Card,
 } from "react-bootstrap";
 
-import Message from "./../UI/Message";
-import { addToCart, removeFromCart } from "./../store/cartAction";
+import Message from "../UI/Message";
+import { addToCart, removeFromCart } from "../store/cartAction";
 
 const CartScreen = () => {
   const dispatch = useDispatch();

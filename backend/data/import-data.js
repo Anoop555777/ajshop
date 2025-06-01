@@ -6,13 +6,16 @@ const product = require("./products");
 dotenv.config({ path: "./config.env" });
 
 const DB = process.env.DATABASE.replace(
-  "<password>",
+  "<PASSWORD>",
   process.env.DATABASE_PASSWORD
 );
 
 mongoose
   .connect(DB, {
     useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
   })
   .then((connect) => console.log("DataBase connected successfully"));
 

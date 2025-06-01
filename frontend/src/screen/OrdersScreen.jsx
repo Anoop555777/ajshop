@@ -4,8 +4,8 @@ import { Row, Col, ListGroup, Image, Card, Button } from "react-bootstrap";
 import { Link, useParams, useLocation } from "react-router-dom";
 import Message from "../UI/Message";
 import Spinner from "../UI/Spinner";
-import { getOrderToPaid, getOrder, getSession } from "./../store/orderAction";
-import { getOrderToDeliver } from "./../store/orderAction";
+import { getOrderToPaid, getOrder, getSession } from "../store/orderAction";
+import { getOrderToDeliver } from "../store/orderAction";
 import { orderDeliverAction } from "../store/orderDeliverSlice";
 const OrdersScreen = () => {
   const [sdkReady, setSDKReady] = useState(false);
